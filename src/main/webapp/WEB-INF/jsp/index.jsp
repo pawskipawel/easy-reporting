@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-Hello from new project :) 
+Hello from MVC SPRING :D:D 
 </body>
 </html>
