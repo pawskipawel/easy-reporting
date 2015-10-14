@@ -5,5 +5,12 @@
 		<class>com.paxxa.ers.entity.Report</class>
 		<class>com.paxxa.ers.entity.Consultant</class>
 		<class>com.paxxa.ers.entity.Role</class>
+		<class>com.paxxa.ers.entity.Invoice</class>
+		<class>com.paxxa.ers.entity.PaymentTerms</class>
+		<class>com.paxxa.ers.entity.PaymentType</class>
+		<class>com.paxxa.ers.entity.BankAccount</class>
+		<class>com.paxxa.ers.entity.Company</class>
+		<class>com.paxxa.ers.entity.User</class>
+		<class>com.paxxa.ers.entity.Address</class>
 	</persistence-unit>
 </persistence>

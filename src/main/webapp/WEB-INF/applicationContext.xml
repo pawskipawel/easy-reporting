@@ -12,7 +12,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 <!-- In this applitation context we scan everything without controllers 
 		(controllers we scan in dispatcher-servlet.xml) -->
-	<context:component-scan base-package="com.paxxa.jba">
+	<context:component-scan base-package="com.paxxa.ers">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
@@ -44,5 +44,8 @@
 		id="transactionManager">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
+
+<!-- REQUIREMENTS for REPOSIOTRIES In namespaces tick "JPA" and then add following tag which points to repository folder -->
+<jpa:repositories base-package="com.paxxa.ers.repository" entity-manager-factory-ref="emf" transaction-manager-ref="transactionManager" />
 
 </beans>

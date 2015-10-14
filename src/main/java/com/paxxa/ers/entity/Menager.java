@@ -23,6 +23,8 @@ public class Menager {
 
 	private String email;
 	
+	private Boolean enabled;
+	
 	@Column(name = "company_name")
 	private String companyName;
 	
@@ -87,6 +89,14 @@ public class Menager {
 
 	public void setConsultants(List<Consultant> consultants) {
 		this.consultants = consultants;
+	}
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 	

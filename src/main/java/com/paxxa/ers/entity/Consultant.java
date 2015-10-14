@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Consultant {
@@ -23,15 +24,17 @@ public class Consultant {
 
 	private String email;
 
+	private Boolean enabled;
+
 	@ManyToMany
 	@JoinTable
 	private List<Role> roles;
-	
+
 	@ManyToOne
-	@JoinColumn( name="menager_id")
+	@JoinColumn(name = "menager_id")
 	private Menager menager;
-	
-	@ManyToMany (mappedBy="consultants")
+
+	@OneToMany(mappedBy = "consultant")
 	private List<Report> reports;
 
 	public Integer getId() {
@@ -89,7 +92,13 @@ public class Consultant {
 	public void setReports(List<Report> reports) {
 		this.reports = reports;
 	}
-	
-	
+
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
 
 }

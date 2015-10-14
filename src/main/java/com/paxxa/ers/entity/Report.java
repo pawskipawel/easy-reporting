@@ -1,14 +1,13 @@
 package com.paxxa.ers.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Report {
@@ -36,9 +35,9 @@ public class Report {
 
 	private String notes;
 
-	@ManyToMany
-	@JoinColumn
-	private List<Consultant> consultants;
+	@ManyToOne
+	@JoinColumn(name="consultant_id")
+	private Consultant consultant;
 
 	public Integer getId() {
 		return id;
@@ -104,12 +103,14 @@ public class Report {
 		this.notes = notes;
 	}
 
-	public List<Consultant> getConsultants() {
-		return consultants;
+	public Consultant getConsultant() {
+		return consultant;
 	}
 
-	public void setConsultants(List<Consultant> consultants) {
-		this.consultants = consultants;
+	public void setConsultant(Consultant consultant) {
+		this.consultant = consultant;
 	}
+
+
 
 }

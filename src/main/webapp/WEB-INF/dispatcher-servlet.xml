@@ -6,13 +6,17 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-<!--
-	1. We need to tick "context" namespaces and add component-scan 
-	2. base-package must point to folder with controllers
-	 -->
-<context:component-scan base-package="com.paxxa.ers.controller"></context:component-scan>
+	<!-- 1. We need to tick "context" namespaces and add component-scan 2. base-package 
+		must point to folder with controllers -->
+	<context:component-scan base-package="com.paxxa.ers.controller"></context:component-scan>
 
-<bean id="tilesConfigurer"
+	<!-- 1. We need to tick "mvc" namespaces for hibernate validator -->
+	<mvc:annotation-driven />
+
+
+	<!-- Bean configuration for apache tiles -->
+
+	<bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<property name="definitions">
 			<list>

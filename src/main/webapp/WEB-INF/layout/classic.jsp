@@ -28,8 +28,8 @@ absolute url	 --%>
 <!-- jQuery  -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-	
-	
+
+
 <!--  TAG FOR JQUERY VALIDATION PLUGIN -->
 <script type="text/javascript"
 	src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js"></script>
@@ -50,9 +50,9 @@ absolute url	 --%>
 	<!-- this tag will read value of the current attribute from general - depend on the jsp page value will be the name of the page -->
 	<tilesx:useAttribute name="current" />
 
-	<div class="container">
+	<div class="container-full">
 
-		<div class="container">
+		<div class="container-full">
 
 			<!-- Static navbar -->
 			<nav class="navbar navbar-default">
@@ -65,25 +65,28 @@ absolute url	 --%>
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href='<spring:url value="/"/>'>Easy reporting</a>
+						<a class="navbar-brand" href='<spring:url value="/"/>'>Easy
+							reporting</a>
 					</div>
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
 							<li class="${current == 'index' ? 'active' : ''}"><a
 								href='<spring:url value="/"/>'>Home</a></li>
 
-							
-								<li class="${current == 'users' ? 'active' : ''}"><a
-									href="<spring:url value="/users.html"/>">Users</a></li>
-						
+							<li class="${current == 'menagers' ? 'active' : ''}"><a
+								href="<spring:url value="/menagers.html"/>">Menagers</a></li>
+
+							<li class="${current == 'consultants' ? 'active' : ''}"><a
+								href="<spring:url value="/consultants.html"/>">Team</a></li>
+
 							<li class="${current == 'register' ? 'active' : ''}"><a
 								href="<spring:url value="/register.html"/>">Register</a></li>
-							
-								<li class="${current == 'login' ? 'active' : ''}"><a
-									href="<spring:url value="/login.html"/>">Login</a></li>
-						
-								
-						
+
+							<li class="${current == 'login' ? 'active' : ''}"><a
+								href="<spring:url value="/login.html"/>">Login</a></li>
+
+
+
 
 						</ul>
 
@@ -93,8 +96,12 @@ absolute url	 --%>
 				<!--/.container-fluid -->
 			</nav>
 
-
-			<tiles:insertAttribute name="body" />
+			<div class="row">
+				<div class="col-md-10 col-md-offset-1">
+					<tiles:insertAttribute name="body" />
+					</div>
+			</div>
+			
 			<br> <br>
 			<center>
 				<tiles:insertAttribute name="footer" />
@@ -102,5 +109,6 @@ absolute url	 --%>
 			</center>
 
 		</div>
+	</div>
 </body>
 </html>

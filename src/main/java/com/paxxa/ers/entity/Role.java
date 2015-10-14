@@ -21,6 +21,9 @@ public class Role {
 	
 	@ManyToMany(mappedBy="roles")
 	private List<Consultant> consultants;
+	
+	@ManyToMany(mappedBy="roles")
+	private List<User> users;
 
 	public Integer getId() {
 		return id;
