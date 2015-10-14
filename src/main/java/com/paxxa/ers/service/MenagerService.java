@@ -1,4 +1,4 @@
-package com.paxxa.ers.service;
+/*package com.paxxa.ers.service;
 
 import java.util.List;
 
@@ -18,3 +18,4 @@ public class MenagerService {
 		return menagerRepository.findAll();
 	}
 }
+*/

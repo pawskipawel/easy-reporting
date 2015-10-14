@@ -46,7 +46,8 @@ public class Invoice {
 	@JoinColumn(name="accound_id")
 	private BankAccount bankAccount;
 	
-	
+	@ManyToOne
+	@JoinColumn(name="company_id")
 	private Company company;
 	
 	

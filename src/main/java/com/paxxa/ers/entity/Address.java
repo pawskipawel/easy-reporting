@@ -1,12 +1,11 @@
 package com.paxxa.ers.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Address {
@@ -26,7 +25,8 @@ public class Address {
 
 	private String email;
 
-	@ManyToMany(mappedBy = "address")
-	private List<Company> companys;
+	@ManyToOne
+	@JoinColumn
+	private Company companys;
 
 }

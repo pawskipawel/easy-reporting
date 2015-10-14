@@ -1,4 +1,4 @@
-package com.paxxa.ers.controller;
+/*package com.paxxa.ers.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,3 +38,4 @@ public class MenagerController {
 		
 	}
 }
+*/

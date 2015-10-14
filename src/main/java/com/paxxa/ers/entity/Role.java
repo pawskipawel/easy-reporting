@@ -13,16 +13,10 @@ public class Role {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	
+
 	private String name;
 
-	@ManyToMany(mappedBy="roles")
-	private List<Menager> menagers;
-	
-	@ManyToMany(mappedBy="roles")
-	private List<Consultant> consultants;
-	
-	@ManyToMany(mappedBy="roles")
+	@ManyToMany(mappedBy = "roles")
 	private List<User> users;
 
 	public Integer getId() {
@@ -41,22 +35,4 @@ public class Role {
 		this.name = name;
 	}
 
-	public List<Menager> getMenagers() {
-		return menagers;
-	}
-
-	public void setMenagers(List<Menager> menagers) {
-		this.menagers = menagers;
-	}
-
-	public List<Consultant> getConsultants() {
-		return consultants;
-	}
-
-	public void setConsultants(List<Consultant> consultants) {
-		this.consultants = consultants;
-	}
-	
-	
-	
 }

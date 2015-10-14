@@ -1,4 +1,4 @@
-package com.paxxa.ers.service;
+/*package com.paxxa.ers.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,3 +101,4 @@ public class InitDbService {
 		reportRepository.save(report2);
 	}
 }
+*/
