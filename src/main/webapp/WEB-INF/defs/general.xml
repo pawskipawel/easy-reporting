@@ -14,22 +14,16 @@
 		<put-attribute name="current" value="index" />
 	</definition>
 
-	<definition name="menagers" extends="common">
-		<put-attribute name="title" value="Menagers" />
-		<put-attribute name="body" value="/WEB-INF/jsp/menagers.jsp" />
-		<put-attribute name="current" value="menagers" />
-	</definition>
-
-	<definition name="consultants" extends="common">
-		<put-attribute name="title" value="Consultants" />
-		<put-attribute name="body" value="/WEB-INF/jsp/consultants.jsp" />
-		<put-attribute name="current" value="consultants" />
+	<definition name="companies" extends="common">
+		<put-attribute name="title" value="Companies" />
+		<put-attribute name="body" value="/WEB-INF/jsp/companies.jsp" />
+		<put-attribute name="current" value="companies" />
 	</definition>
 	
-	<definition name="consultant-detail" extends="common">
-		<put-attribute name="title" value="Consultant detail" />
-		<put-attribute name="body" value="/WEB-INF/jsp/consultant-detail.jsp" />
-		<put-attribute name="current" value="consultants" />
+	<definition name="company-users" extends="common">
+		<put-attribute name="title" value="Company users" />
+		<put-attribute name="body" value="/WEB-INF/jsp/company-users.jsp" />
+		<put-attribute name="current" value="companies" />
 	</definition>
 
 

@@ -1,14 +1,15 @@
 package com.paxxa.ers.entity;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Company {
@@ -20,17 +21,98 @@ public class Company {
 	@Column(name = "company_name")
 	private String companyName;
 
-	private Integer nip;
+	private Long nip;
 
-	private Integer phone;
+	private Long phone;
 
-	@OneToMany(mappedBy="companys")
-	private List<Address> address;
+	@Column(name = "registration_date")
+	private Date registrationDate;
 
 	@OneToMany(mappedBy = "companys")
+	private List<Address> address;
+
+	@OneToMany(mappedBy = "company")
 	private List<User> users;
-	
-	@OneToMany(mappedBy="company")
+
+	@OneToMany(mappedBy = "company")
 	private List<Invoice> invoices;
+	
+	@OneToOne
+	private BankAccount bankAccount;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+
+	public Long getNip() {
+		return nip;
+	}
+
+	public void setNip(Long nip) {
+		this.nip = nip;
+	}
+
+	public Long getPhone() {
+		return phone;
+	}
+
+	public void setPhone(Long phone) {
+		this.phone = phone;
+	}
+
+	public Date getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
+
+	public List<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(List<Address> address) {
+		this.address = address;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public List<Invoice> getInvoices() {
+		return invoices;
+	}
+
+	public void setInvoices(List<Invoice> invoices) {
+		this.invoices = invoices;
+	}
+
+	public BankAccount getBankAccount() {
+		return bankAccount;
+	}
+
+	public void setBankAccount(BankAccount bankAccount) {
+		this.bankAccount = bankAccount;
+	}
+	
+	
 
 }

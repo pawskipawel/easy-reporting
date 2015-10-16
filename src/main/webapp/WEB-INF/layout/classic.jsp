@@ -73,14 +73,8 @@ absolute url	 --%>
 							<li class="${current == 'index' ? 'active' : ''}"><a
 								href='<spring:url value="/"/>'>Home</a></li>
 
-							<li class="${current == 'menagers' ? 'active' : ''}"><a
-								href="<spring:url value="/menagers.html"/>">Menagers</a></li>
-
-							<li class="${current == 'consultants' ? 'active' : ''}"><a
-								href="<spring:url value="/consultants.html"/>">Team</a></li>
-
-							<li class="${current == 'register' ? 'active' : ''}"><a
-								href="<spring:url value="/register.html"/>">Register</a></li>
+							<li class="${current == 'companies' ? 'active' : ''}"><a
+								href="<spring:url value="/companies.html"/>">Companies</a></li>
 
 							<li class="${current == 'login' ? 'active' : ''}"><a
 								href="<spring:url value="/login.html"/>">Login</a></li>
