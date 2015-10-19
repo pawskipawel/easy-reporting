@@ -9,6 +9,7 @@
 	<http use-expressions="true">
 		<intercept-url pattern="/companies**" access="hasRole('ADMIN')" />
 		<intercept-url pattern="/companies/**" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/account**" access="hasRole('USER')" />
 		<form-login login-page="/login.html" />
 		<logout logout-url="/logout" />
 		<csrf disabled="true" />
@@ -16,8 +17,8 @@
 
 	<authentication-manager>
 		<authentication-provider>
-<!-- 
-			<password-encoder hash="bcrypt"></password-encoder> -->
+
+			<password-encoder hash="bcrypt"></password-encoder> 
 
 			<!-- STATIC SOLUTION just to check if all works fine <user-service> <user 
 				name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" /> </user-service> -->

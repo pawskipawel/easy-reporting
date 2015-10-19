@@ -37,5 +37,12 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
 		<put-attribute name="current" value="login" />
 	</definition>
+	
+	
+	<definition name="user-details" extends="common">
+		<put-attribute name="title" value="Company details" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user-details.jsp" />
+		<put-attribute name="current" value="user-details" />
+	</definition>
 
 </tiles-definitions>

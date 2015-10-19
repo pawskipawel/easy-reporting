@@ -84,6 +84,11 @@ absolute url	 --%>
 
 							<li class="${current == 'user-register' ? 'active' : ''}"><a
 								href="<spring:url value="/register.html"/>">Register</a></li>
+								
+							<security:authorize access="hasRole('USER')">
+								<li class="${current == 'user-details' ? 'active' : ''}"><a
+									href="<spring:url value="/account.html"/>">Account</a></li>
+							</security:authorize>
 
 							<security:authorize access="!isAuthenticated()">
 								<li class="${current == 'login' ? 'active' : ''}"><a

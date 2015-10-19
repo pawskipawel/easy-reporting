@@ -16,4 +16,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	//Spring JPA will auto generate implementation of this method. 
 	List<User> findByCompany(Company company);
 
+	User findByName(String name);
+
+
+
 }

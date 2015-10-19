@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.paxxa.ers.entity.Address;
@@ -68,11 +69,10 @@ public class InitDbService {
 		john.setEmail("john@hotmailcom");
 		john.setEnabled(true);
 		john.setName("admin");
-		john.setPassword("admin");
+		BCryptPasswordEncoder encoderJohn = new BCryptPasswordEncoder(); 
+		john.setPassword(encoderJohn.encode("admin"));
 		List<Role> johnRoles = new ArrayList<Role>();
-		johnRoles.add(roleUser);
 		johnRoles.add(roleAdmin);
-		johnRoles.add(roleMenager);
 		john.setRoles(johnRoles);
 		userRepository.save(john);
 		
@@ -80,7 +80,8 @@ public class InitDbService {
 		jim.setEmail("jim@gmail.com");
 		jim.setEnabled(true);
 		jim.setName("jim");
-		jim.setPassword("start");
+		BCryptPasswordEncoder encoderjim = new BCryptPasswordEncoder();
+		jim.setPassword(encoderjim.encode("start"));
 		List<Role> jimRoles = new ArrayList<Role>();
 		jimRoles.add(roleUser);
 		jim.setRoles(jimRoles);
@@ -99,7 +100,8 @@ public class InitDbService {
 		ann.setEmail("Ann@gmail.com");
 		ann.setEnabled(true);
 		ann.setName("Ann");
-		ann.setPassword("Ann");
+		BCryptPasswordEncoder encoderAnn = new BCryptPasswordEncoder();
+		ann.setPassword(encoderAnn.encode("Ann"));
 		userRepository.save(ann);
 		
 		Company companyZ = new Company();
