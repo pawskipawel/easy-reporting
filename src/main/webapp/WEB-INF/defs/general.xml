@@ -19,12 +19,23 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/companies.jsp" />
 		<put-attribute name="current" value="companies" />
 	</definition>
-	
+
 	<definition name="company-users" extends="common">
 		<put-attribute name="title" value="Company users" />
 		<put-attribute name="body" value="/WEB-INF/jsp/company-users.jsp" />
 		<put-attribute name="current" value="companies" />
 	</definition>
 
+	<definition name="user-register" extends="common">
+		<put-attribute name="title" value="Register form" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user-register.jsp" />
+		<put-attribute name="current" value="user-register" />
+	</definition>
+
+	<definition name="login" extends="common">
+		<put-attribute name="title" value="Login" />
+		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+		<put-attribute name="current" value="login" />
+	</definition>
 
 </tiles-definitions>

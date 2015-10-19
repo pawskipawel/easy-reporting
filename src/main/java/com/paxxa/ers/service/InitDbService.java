@@ -53,22 +53,27 @@ public class InitDbService {
 	public void init() {
 
 		Role roleAdmin = new Role();
-		roleAdmin.setName("Role_ADMIN");
+		roleAdmin.setName("ROLE_ADMIN");
 		roleRepository.save(roleAdmin);
 
 		Role roleMenager = new Role();
-		roleMenager.setName("Role_MENAGER");
+		roleMenager.setName("ROLE_MENAGER");
 		roleRepository.save(roleMenager);
 
 		Role roleUser = new Role();
-		roleUser.setName("Role_USER");
+		roleUser.setName("ROLE_USER");
 		roleRepository.save(roleUser);
 
 		User john = new User();
 		john.setEmail("john@hotmailcom");
 		john.setEnabled(true);
-		john.setName("john");
-		john.setPassword("john");
+		john.setName("admin");
+		john.setPassword("admin");
+		List<Role> johnRoles = new ArrayList<Role>();
+		johnRoles.add(roleUser);
+		johnRoles.add(roleAdmin);
+		johnRoles.add(roleMenager);
+		john.setRoles(johnRoles);
 		userRepository.save(john);
 		
 		User jim = new User();
@@ -76,6 +81,9 @@ public class InitDbService {
 		jim.setEnabled(true);
 		jim.setName("jim");
 		jim.setPassword("start");
+		List<Role> jimRoles = new ArrayList<Role>();
+		jimRoles.add(roleUser);
+		jim.setRoles(jimRoles);
 		userRepository.save(jim);
 
 		Company companyX = new Company();

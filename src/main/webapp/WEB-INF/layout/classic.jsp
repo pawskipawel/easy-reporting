@@ -38,6 +38,10 @@ absolute url	 --%>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+<!-- taglib for Security expressions   -->
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="security"%>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:getAsString name="title"></tiles:getAsString></title>
 
@@ -73,16 +77,38 @@ absolute url	 --%>
 							<li class="${current == 'index' ? 'active' : ''}"><a
 								href='<spring:url value="/"/>'>Home</a></li>
 
-							<li class="${current == 'companies' ? 'active' : ''}"><a
-								href="<spring:url value="/companies.html"/>">Companies</a></li>
+							<security:authorize access="hasRole('ADMIN')">
+								<li class="${current == 'companies' ? 'active' : ''}"><a
+									href="<spring:url value="/companies.html"/>">Companies</a></li>
+							</security:authorize>
 
-							<li class="${current == 'login' ? 'active' : ''}"><a
-								href="<spring:url value="/login.html"/>">Login</a></li>
+							<li class="${current == 'user-register' ? 'active' : ''}"><a
+								href="<spring:url value="/register.html"/>">Register</a></li>
 
-
+							<security:authorize access="!isAuthenticated()">
+								<li class="${current == 'login' ? 'active' : ''}"><a
+									href="<spring:url value="/login.html"/>">Login</a></li>
+							</security:authorize>
 
 
 						</ul>
+
+						<ul class="nav navbar-pills navbar-right">
+							<security:authorize access="isAuthenticated()">
+								<li><p>
+									<p>
+										<a href="<spring:url value="/logout"></spring:url>"
+											type="button" class="btn btn-danger"> <span
+											class="glyphicon glyphicon-off"></span>
+										</a></li>
+
+							</security:authorize>
+						</ul>
+
+
+
+
+
 
 					</div>
 					<!--/.nav-collapse -->
@@ -93,9 +119,9 @@ absolute url	 --%>
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1">
 					<tiles:insertAttribute name="body" />
-					</div>
+				</div>
 			</div>
-			
+
 			<br> <br>
 			<center>
 				<tiles:insertAttribute name="footer" />

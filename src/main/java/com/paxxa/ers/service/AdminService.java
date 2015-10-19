@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.paxxa.ers.entity.Company;
-import com.paxxa.ers.entity.Role;
 import com.paxxa.ers.entity.User;
 import com.paxxa.ers.repository.CompanyRepository;
 import com.paxxa.ers.repository.RoleRepository;
@@ -41,5 +40,4 @@ public class AdminService {
 		company.setUsers(users);
 		return company;
 	}
-
 }
