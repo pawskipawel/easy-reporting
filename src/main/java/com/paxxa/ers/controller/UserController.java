@@ -21,5 +21,12 @@ public class UserController {
 		model.addAttribute("user", UserService.findUser(name));
 		return "user-details";
 	}
+	
+	@RequestMapping("/user-settings")
+	public String settings(Model model, Principal principal){
+		String name = principal.getName();
+		model.addAttribute("user", UserService.findUser(name));
+		return "user-settings";
+	}
 
 }

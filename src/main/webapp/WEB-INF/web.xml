@@ -54,11 +54,9 @@
 	</filter-mapping>
 
 	<session-config>
-		<session-timeout>1</session-timeout>
+		<session-timeout>15</session-timeout>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
-
-
 
 
 </web-app>

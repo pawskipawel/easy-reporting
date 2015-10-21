@@ -62,5 +62,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/expired-session.jsp" />
 		<put-attribute name="current" value="expired-session" />
 	</definition>
+	
+	<definition name="user-settings" extends="common">
+		<put-attribute name="title" value="Settings" />
+		<put-attribute name="body" value="/WEB-INF/jsp/user-settings.jsp" />
+		<put-attribute name="current" value="user-settings" />
+	</definition>
 
 </tiles-definitions>

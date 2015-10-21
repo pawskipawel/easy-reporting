@@ -76,7 +76,7 @@
 <br>
 
 <div class="row">
-	<div class="col-xs-7">
+	<div class="col-md-7">
 
 		<div id="carousel-example-generic" class="carousel slide"
 			data-ride="carousel">
@@ -133,7 +133,7 @@
 	</div>
 
 
-	<div class="col-xs-5">
+	<div class="col-md-5">
 		<form class="form-signin" action="/easy-reporting/login" method="POST">
 			<h2 class="form-signin-heading">Please sign in</h2>
 			<input type="text" name="username" class="form-control"

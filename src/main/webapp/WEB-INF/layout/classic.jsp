@@ -82,15 +82,15 @@ absolute url	 --%>
 								reporting</a>
 						</security:authorize>
 						<security:authorize access="hasRole('ADMIN')">
-							<a class="navbar-brand" href='<spring:url value="/companies.html"/>'>Easy
-								reporting</a>
+							<a class="navbar-brand"
+								href='<spring:url value="/companies.html"/>'>Easy reporting</a>
 						</security:authorize>
 						<security:authorize access="hasRole('USER')">
-							<a class="navbar-brand" href='<spring:url value="/account.html"/>'>Easy
-								reporting</a>
+							<a class="navbar-brand"
+								href='<spring:url value="/account.html"/>'>Easy reporting</a>
 						</security:authorize>
-						
-						
+
+						<!-- Left site of menu -->
 					</div>
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
@@ -100,8 +100,10 @@ absolute url	 --%>
 									href="<spring:url value="/companies.html"/>">Companies</a></li>
 							</security:authorize>
 
-							<li class="${current == 'user-register' ? 'active' : ''}"><a
-								href="<spring:url value="/register.html"/>">Register</a></li>
+							<security:authorize access="!isAuthenticated()">
+								<li class="${current == 'user-register' ? 'active' : ''}"><a
+									href="<spring:url value="/register.html"/>">Register</a></li>
+							</security:authorize>
 
 							<security:authorize access="hasRole('USER')">
 								<li class="${current == 'user-details' ? 'active' : ''}"><a
@@ -119,12 +121,9 @@ absolute url	 --%>
 									href="<spring:url value="/login.html"/>">Login</a></li>
 							</security:authorize>
 
-
-
 						</ul>
 
-
-
+						<!-- Right site of menu -->
 						<ul class="nav navbar-pills navbar-right">
 							<security:authorize access="isAuthenticated()">
 								<li><p>
@@ -152,21 +151,27 @@ absolute url	 --%>
 
 
 						<ul class="nav navbar-pills navbar-right">
-							<security:authorize access="isAuthenticated()">
+							<security:authorize access="hasRole('USER')">
 								<li><p>
 									<p>
-										<a href="<spring:url value="/settings"></spring:url>"
+										<a href="<spring:url value="/user-settings.html"></spring:url>"
 											type="button" class="btn btn-default">${pageContext.request.userPrincipal.name}
 											<span class="glyphicon glyphicon-cog"></span>
 										</a></li>
-
 							</security:authorize>
 						</ul>
-
-
-
-
-
+						
+						<ul class="nav navbar-pills navbar-right">
+							<security:authorize access="hasRole('ADMIN')">
+								<li><p>
+									<p>
+										<a href="<spring:url value="/admin-settings.html"></spring:url>"
+											type="button" class="btn btn-default">${pageContext.request.userPrincipal.name}
+											<span class="glyphicon glyphicon-cog"></span>
+										</a></li>
+							</security:authorize>
+						</ul>
+						
 
 					</div>
 					<!--/.nav-collapse -->
@@ -183,7 +188,6 @@ absolute url	 --%>
 			<br> <br>
 			<center>
 				<tiles:insertAttribute name="footer" />
-
 			</center>
 
 		</div>

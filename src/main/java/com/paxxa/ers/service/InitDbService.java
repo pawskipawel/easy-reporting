@@ -81,7 +81,7 @@ public class InitDbService {
 		jim.setEnabled(true);
 		jim.setName("jim");
 		BCryptPasswordEncoder encoderjim = new BCryptPasswordEncoder();
-		jim.setPassword(encoderjim.encode("start"));
+		jim.setPassword(encoderjim.encode("1"));
 		List<Role> jimRoles = new ArrayList<Role>();
 		jimRoles.add(roleUser);
 		jim.setRoles(jimRoles);
