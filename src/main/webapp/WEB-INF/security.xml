@@ -10,15 +10,25 @@
 		<intercept-url pattern="/companies**" access="hasRole('ADMIN')" />
 		<intercept-url pattern="/companies/**" access="hasRole('ADMIN')" />
 		<intercept-url pattern="/account**" access="hasRole('USER')" />
-		<form-login login-page="/login.html" />
-		<logout logout-url="/logout" />
+		<form-login login-page="/login.html" 
+		authentication-success-handler-ref="myAuthenticationSuccessHandler"
+		/>
+		
+		<logout logout-success-url="/logout-info.html?logoutSuccess=true"
+			delete-cookies="JSESSIONID" />
 		<csrf disabled="true" />
+
+		<session-management>
+			<concurrency-control max-sessions="2"
+				expired-url="/expired-session" />
+
+		</session-management>
 	</http>
 
 	<authentication-manager>
 		<authentication-provider>
 
-			<password-encoder hash="bcrypt"></password-encoder> 
+			<password-encoder hash="bcrypt"></password-encoder>
 
 			<!-- STATIC SOLUTION just to check if all works fine <user-service> <user 
 				name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" /> </user-service> -->
@@ -29,7 +39,11 @@
 											join role on user_role.roles_id = role.id 
 											where user.name = ?"
 				users-by-username-query="select name, password,enabled from user where name = ?" />
-				</authentication-provider>
+		</authentication-provider>
 	</authentication-manager>
+	
+	<beans:bean id="myAuthenticationSuccessHandler"
+        class="com.paxxa.ers.security.MySimpleUrlAuthenticationSuccessHandler" />
+
 
 </beans:beans>

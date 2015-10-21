@@ -42,6 +42,14 @@ absolute url	 --%>
 <%@ taglib uri="http://www.springframework.org/security/tags"
 	prefix="security"%>
 
+<script type="text/javascript">
+	$(function() {
+		$('[data-toggle="popover"]').popover()
+	})
+</script>
+
+
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:getAsString name="title"></tiles:getAsString></title>
 
@@ -69,13 +77,23 @@ absolute url	 --%>
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href='<spring:url value="/"/>'>Easy
-							reporting</a>
+						<security:authorize access="isAnonymous()">
+							<a class="navbar-brand" href='<spring:url value="/index.html"/>'>Easy
+								reporting</a>
+						</security:authorize>
+						<security:authorize access="hasRole('ADMIN')">
+							<a class="navbar-brand" href='<spring:url value="/companies.html"/>'>Easy
+								reporting</a>
+						</security:authorize>
+						<security:authorize access="hasRole('USER')">
+							<a class="navbar-brand" href='<spring:url value="/account.html"/>'>Easy
+								reporting</a>
+						</security:authorize>
+						
+						
 					</div>
 					<div id="navbar" class="navbar-collapse collapse">
 						<ul class="nav navbar-nav">
-							<li class="${current == 'index' ? 'active' : ''}"><a
-								href='<spring:url value="/"/>'>Home</a></li>
 
 							<security:authorize access="hasRole('ADMIN')">
 								<li class="${current == 'companies' ? 'active' : ''}"><a
@@ -84,11 +102,17 @@ absolute url	 --%>
 
 							<li class="${current == 'user-register' ? 'active' : ''}"><a
 								href="<spring:url value="/register.html"/>">Register</a></li>
-								
+
 							<security:authorize access="hasRole('USER')">
 								<li class="${current == 'user-details' ? 'active' : ''}"><a
 									href="<spring:url value="/account.html"/>">Account</a></li>
 							</security:authorize>
+
+							<security:authorize access="isAuthenticated()">
+								<li class="${current == 'store' ? 'active' : ''}"><a
+									href="<spring:url value="/store.html"/>">Store</a></li>
+							</security:authorize>
+
 
 							<security:authorize access="!isAuthenticated()">
 								<li class="${current == 'login' ? 'active' : ''}"><a
@@ -96,7 +120,10 @@ absolute url	 --%>
 							</security:authorize>
 
 
+
 						</ul>
+
+
 
 						<ul class="nav navbar-pills navbar-right">
 							<security:authorize access="isAuthenticated()">
@@ -105,6 +132,32 @@ absolute url	 --%>
 										<a href="<spring:url value="/logout"></spring:url>"
 											type="button" class="btn btn-danger"> <span
 											class="glyphicon glyphicon-off"></span>
+										</a></li>
+							</security:authorize>
+						</ul>
+
+						<ul class="nav navbar-pills navbar-right">
+							<security:authorize access="isAuthenticated()">
+								<li><p>
+									<p>
+
+										<a role="button" class="btn btn-default" data-container="body"
+											data-toggle="popover" data-placement="bottom"
+											data-content="phone number">Help <span
+											class="glyphicon glyphicon-earphone"></span></a></li>
+							</security:authorize>
+						</ul>
+
+
+
+
+						<ul class="nav navbar-pills navbar-right">
+							<security:authorize access="isAuthenticated()">
+								<li><p>
+									<p>
+										<a href="<spring:url value="/settings"></spring:url>"
+											type="button" class="btn btn-default">${pageContext.request.userPrincipal.name}
+											<span class="glyphicon glyphicon-cog"></span>
 										</a></li>
 
 							</security:authorize>

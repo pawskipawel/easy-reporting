@@ -19,7 +19,7 @@
 		in servlet For example servlet name: dispatcher , xml configuration name: 
 		dispatcher-servlet.xml Best practice is to use DispatcherServlet for just 
 		presentation layer and the rest (DB connection etc) is defined in ContextLoaderListener -->
-		
+
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -33,16 +33,16 @@
 		<url-pattern>*.xml</url-pattern>
 		<url-pattern>*.json</url-pattern>
 	</servlet-mapping>
-	
-		<!-- With this listener spring will search for another spring bean configuration 
+
+	<!-- With this listener spring will search for another spring bean configuration 
 		file which is applicationContext.xml - spring will read this configuration 
 		file and create another context -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
-	<!-- filters for spring security  -->
-	
+
+	<!-- filters for spring security -->
+
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -52,6 +52,13 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
+
+	<session-config>
+		<session-timeout>1</session-timeout>
+		<tracking-mode>COOKIE</tracking-mode>
+	</session-config>
+
+
+
 
 </web-app>

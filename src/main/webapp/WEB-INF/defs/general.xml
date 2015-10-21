@@ -13,6 +13,12 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
 		<put-attribute name="current" value="index" />
 	</definition>
+	
+		<definition name="index" extends="common">
+		<put-attribute name="title" value="Easy reporting" />
+		<put-attribute name="body" value="/WEB-INF/jsp/index.jsp" />
+		<put-attribute name="current" value="index" />
+	</definition>
 
 	<definition name="companies" extends="common">
 		<put-attribute name="title" value="Companies" />
@@ -43,6 +49,18 @@
 		<put-attribute name="title" value="Company details" />
 		<put-attribute name="body" value="/WEB-INF/jsp/user-details.jsp" />
 		<put-attribute name="current" value="user-details" />
+	</definition>
+	
+	<definition name="logout-info" extends="common">
+		<put-attribute name="title" value="Logout" />
+		<put-attribute name="body" value="/WEB-INF/jsp/logout-info.jsp" />
+		<put-attribute name="current" value="logout-info" />
+	</definition>
+	
+	<definition name="expired-session" extends="common">
+		<put-attribute name="title" value="Invalid Session" />
+		<put-attribute name="body" value="/WEB-INF/jsp/expired-session.jsp" />
+		<put-attribute name="current" value="expired-session" />
 	</definition>
 
 </tiles-definitions>
