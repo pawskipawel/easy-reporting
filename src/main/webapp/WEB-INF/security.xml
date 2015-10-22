@@ -12,6 +12,7 @@
 		<intercept-url pattern="/account**" access="hasRole('USER')" />
 		<intercept-url pattern="/account/**" access="hasRole('USER')" />
 		<intercept-url pattern="/user-settings**" access="hasRole('USER')" />
+		<intercept-url pattern="/user-settings/**" access="hasRole('USER')" />
 		<form-login login-page="/login.html" 
 		authentication-success-handler-ref="myAuthenticationSuccessHandler"
 		/>

@@ -10,23 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.paxxa.ers.service.UserService;
 
 @Controller
-public class UserController {
+public class UserCompanySettingsController {
 	
 	@Autowired
 	UserService userService;
-	
-	@RequestMapping("/account")
-	public String account(Model model, Principal principal){
-		String name = principal.getName();
-		model.addAttribute("user", userService.findUser(name));
-		return "user-details";
-	}
-	
-	@RequestMapping("/user-settings")
-	public String settings(Model model, Principal principal){
-		String name = principal.getName();
-		model.addAttribute("user", userService.findUser(name));
-		return "user-settings";
-	}
 
+	@RequestMapping("/user-settings/gg")
+	public String settCompanyDetails(Model model, Principal principal) {
+		String name = principal.getName();
+		model.addAttribute("user", userService.findUser(name));
+		return "company-details";
+	}
 }

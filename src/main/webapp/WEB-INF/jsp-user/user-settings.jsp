@@ -17,37 +17,33 @@
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title"><strong>Company</strong></h3>
+				<h3 class="panel-title">
+					<strong>Company</strong>
+				</h3>
 			</div>
 			<div class="panel-body">
 
-				<div class="panel panel-default">
-					<div class="panel-body"><h5>Company details
-					
-					
-					</h5></div>
-				</div>
 
-				<div class="panel panel-default">
-					<div class="panel-body">Users</div>
+				<div class="list-group">
+					<a href="#" class="list-group-item">Company details</a>
+					<a class="list-group-item">Users</a>
 				</div>
 
 
 			</div>
 		</div>
-		
+
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title"><strong>Invoices</strong></h3>
+				<h3 class="panel-title">
+					<strong>Invoices</strong>
+				</h3>
 			</div>
 			<div class="panel-body">
 
-				<div class="panel panel-default">
-					<div class="panel-body">Numeration</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-body">Invoice options</div>
+				<div class="list-group">
+					<a  href="#" class="list-group-item">Numeration</a>
+					<a  href="#" class="list-group-item">Invoice options</a>
 				</div>
 
 
@@ -59,30 +55,31 @@
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title"><strong>User</strong></h3>
+				<h3 class="panel-title">
+					<strong>User</strong>
+				</h3>
 			</div>
 			<div class="panel-body">
 
-				<div class="panel panel-default">
-					<div class="panel-body">user details</div>
-				</div>
-				
-				<div class="panel panel-default">
-					<div class="panel-body">change password</div>
+				<div class="list-group">
+					<a href="#" class="list-group-item">User details</a>
+					<a href="#"class="list-group-item">Change password</a>
 				</div>
 
 			</div>
 		</div>
-		
-		
+
+
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title"><strong>Others</strong></h3>
+				<h3 class="panel-title">
+					<strong>Others</strong>
+				</h3>
 			</div>
 			<div class="panel-body">
 
-				<div class="panel panel-default">
-					<div class="panel-body">Change language</div>
+				<div class="list-group">
+					<a href="#" class="list-group-item">Change language</a>
 				</div>
 
 			</div>
