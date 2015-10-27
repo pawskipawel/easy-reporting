@@ -9,7 +9,6 @@
 	<div class="alert alert-success">${msg}</div>
 </c:if>
 
-
 <form:form modelAttribute="company" method="post">
 
 	<div class="row">
@@ -36,7 +35,7 @@
 									class="col-sm-12 control-label">Company name:</label></td>
 								<td><div class="form-group">
 										<div class="col-sm-12">
-											<c:out value="${companyDB.companyName}" cssClass="form-control" />
+											<form:input path="companyName" cssClass="form-control" />
 
 										</div>
 									</div></td>
@@ -45,7 +44,7 @@
 								<td><label for="nip" class="col-sm-12 control-label">Nip:</label></td>
 								<td><div class="form-group">
 										<div class="col-sm-12">
-											<c:out value="${companyDB.nip}" />
+											<form:input path="nip" cssClass="form-control" />
 
 										</div>
 									</div></td>
@@ -54,7 +53,7 @@
 								<td><label for="phone" class="col-sm-12 control-label">Phone:</label></td>
 								<td><div class="form-group">
 										<div class="col-sm-12">
-											<c:out value="${companyDB.phone}" />
+											<form:input path="phone" cssClass="form-control" />
 
 										</div>
 									</div></td>
@@ -63,7 +62,7 @@
 								<td><label for="email" class="col-sm-12 control-label">Email:</label></td>
 								<td><div class="form-group">
 										<div class="col-sm-12">
-											<c:out value="${companyDB.email}" />
+											<form:input path="email" cssClass="form-control" />
 
 										</div>
 									</div></td>
@@ -88,7 +87,6 @@
 					</h3>
 				</div>
 				<div class="panel-body">
-
 					<table class="table table-bordered ">
 						<thead>
 							<tr>
@@ -145,8 +143,8 @@
 							</tr>
 						</tbody>
 					</table>
-				</div>
 
+				</div>
 			</div>
 		</div>
 
@@ -177,5 +175,3 @@
 <c:out value="${formCompany.companyName}" />
 
 <c:out value="${formCompany.addresses[0].street}" />
-
-<c:out value="${companyDB.companyName}" />

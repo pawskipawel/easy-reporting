@@ -23,11 +23,9 @@ public class Address {
 
 	private String city;
 
-	private String email;
-
 	@ManyToOne
 	@JoinColumn
-	private Company companys;
+	private Company company;
 
 	public Integer getId() {
 		return id;
@@ -69,20 +67,14 @@ public class Address {
 		this.city = city;
 	}
 
-	public String getEmail() {
-		return email;
+	public Company getCompany() {
+		return company;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setCompany(Company company) {
+		this.company = company;
 	}
 
-	public Company getCompanys() {
-		return companys;
-	}
-
-	public void setCompanys(Company companys) {
-		this.companys = companys;
-	}
+	
 
 }

@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><entities>
 	<entity>
+		<entity-name>com.paxxa.ers.entity.PaymentTerms</entity-name>
+		<entity-width>120</entity-width>
+		<entity-height>166</entity-height>
+		<entity-X-Coordinate>1210</entity-X-Coordinate>
+		<entity-Y-Coordinate>302</entity-Y-Coordinate>
+		<primary-collapsed>false</primary-collapsed>
+		<relation-collapsed>false</relation-collapsed>
+		<basic-collapsed>false</basic-collapsed>
+	</entity>
+
+	<entity>
 		<entity-name>com.paxxa.ers.entity.Role</entity-name>
 		<entity-width>120</entity-width>
 		<entity-height>146</entity-height>
@@ -11,20 +22,9 @@
 	</entity>
 
 	<entity>
-		<entity-name>com.paxxa.ers.entity.Address</entity-name>
-		<entity-width>120</entity-width>
-		<entity-height>226</entity-height>
-		<entity-X-Coordinate>10</entity-X-Coordinate>
-		<entity-Y-Coordinate>315</entity-Y-Coordinate>
-		<primary-collapsed>false</primary-collapsed>
-		<relation-collapsed>false</relation-collapsed>
-		<basic-collapsed>false</basic-collapsed>
-	</entity>
-
-	<entity>
 		<entity-name>com.paxxa.ers.entity.Company</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>226</entity-height>
+		<entity-height>286</entity-height>
 		<entity-X-Coordinate>268</entity-X-Coordinate>
 		<entity-Y-Coordinate>315</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
@@ -33,22 +33,22 @@
 	</entity>
 
 	<entity>
-		<entity-name>com.paxxa.ers.entity.Invoice</entity-name>
+		<entity-name>com.paxxa.ers.entity.Address</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>326</entity-height>
-		<entity-X-Coordinate>890</entity-X-Coordinate>
-		<entity-Y-Coordinate>286</entity-Y-Coordinate>
+		<entity-height>206</entity-height>
+		<entity-X-Coordinate>10</entity-X-Coordinate>
+		<entity-Y-Coordinate>315</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
 	</entity>
 
 	<entity>
-		<entity-name>com.paxxa.ers.entity.PaymentTerms</entity-name>
+		<entity-name>com.paxxa.ers.entity.User</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>166</entity-height>
-		<entity-X-Coordinate>1210</entity-X-Coordinate>
-		<entity-Y-Coordinate>302</entity-Y-Coordinate>
+		<entity-height>226</entity-height>
+		<entity-X-Coordinate>268</entity-X-Coordinate>
+		<entity-Y-Coordinate>16</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>
@@ -66,11 +66,11 @@
 	</entity>
 
 	<entity>
-		<entity-name>com.paxxa.ers.entity.User</entity-name>
+		<entity-name>com.paxxa.ers.entity.Invoice</entity-name>
 		<entity-width>120</entity-width>
-		<entity-height>226</entity-height>
-		<entity-X-Coordinate>268</entity-X-Coordinate>
-		<entity-Y-Coordinate>16</entity-Y-Coordinate>
+		<entity-height>326</entity-height>
+		<entity-X-Coordinate>890</entity-X-Coordinate>
+		<entity-Y-Coordinate>286</entity-Y-Coordinate>
 		<primary-collapsed>false</primary-collapsed>
 		<relation-collapsed>false</relation-collapsed>
 		<basic-collapsed>false</basic-collapsed>

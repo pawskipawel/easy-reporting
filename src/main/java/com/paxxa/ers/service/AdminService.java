@@ -4,13 +4,14 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.jboss.logging.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.paxxa.ers.entity.Company;
 import com.paxxa.ers.entity.User;
 import com.paxxa.ers.repository.CompanyRepository;
-import com.paxxa.ers.repository.RoleRepository;
 import com.paxxa.ers.repository.UserRepository;
 
 @Transactional
@@ -21,9 +22,6 @@ public class AdminService {
 	private CompanyRepository companyRepository;
 	@Autowired
 	private UserRepository userRepository;
-	@Autowired
-	private RoleRepository roleRepository;
-	
 
 	public List<Company> findAllCompanies() {
 		return companyRepository.findAll();
@@ -40,4 +38,7 @@ public class AdminService {
 		company.setUsers(users);
 		return company;
 	}
+
+
+
 }

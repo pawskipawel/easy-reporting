@@ -102,6 +102,9 @@ public class InitDbService {
 		ann.setName("Ann");
 		BCryptPasswordEncoder encoderAnn = new BCryptPasswordEncoder();
 		ann.setPassword(encoderAnn.encode("Ann"));
+		List<Role> annRoles = new ArrayList<Role>();
+		annRoles.add(roleUser);
+		ann.setRoles(annRoles);
 		userRepository.save(ann);
 		
 		Company companyZ = new Company();
@@ -117,7 +120,7 @@ public class InitDbService {
 		jim.setCompany(companyX);
 		userRepository.save(jim);
 		
-		john.setCompany(companyX);
+		john.setCompany(companyZ);
 		userRepository.save(john);
 		
 		ann.setCompany(companyZ);
@@ -128,7 +131,7 @@ public class InitDbService {
 		addressCompanyX.setStreetNumber("234");
 		addressCompanyX.setZipcode("20-600");
 		addressCompanyX.setCity("Lublin");
-		addressCompanyX.setCompanys(companyZ);
+		addressCompanyX.setCompany(companyZ);
 		addressRepository.save(addressCompanyX);
 		
 		BankAccount bankAccount1CompanyX = new BankAccount();

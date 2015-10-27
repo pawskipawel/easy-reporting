@@ -3,6 +3,7 @@ package com.paxxa.ers.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,18 +26,20 @@ public class Company {
 
 	private Long phone;
 
+	private String email;
+
 	@Column(name = "registration_date")
 	private Date registrationDate;
 
-	@OneToMany(mappedBy = "companys")
-	private List<Address> address;
+	@OneToMany(mappedBy = "company")
+	private List<Address> addresses;
 
 	@OneToMany(mappedBy = "company")
 	private List<User> users;
 
 	@OneToMany(mappedBy = "company")
 	private List<Invoice> invoices;
-	
+
 	@OneToOne
 	private BankAccount bankAccount;
 
@@ -55,7 +58,6 @@ public class Company {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-
 
 	public Long getNip() {
 		return nip;
@@ -81,12 +83,12 @@ public class Company {
 		this.registrationDate = registrationDate;
 	}
 
-	public List<Address> getAddress() {
-		return address;
+	public List<Address> getAddresses() {
+		return addresses;
 	}
 
-	public void setAddress(List<Address> address) {
-		this.address = address;
+	public void setAddresses(List<Address> addresses) {
+		this.addresses = addresses;
 	}
 
 	public List<User> getUsers() {
@@ -112,7 +114,13 @@ public class Company {
 	public void setBankAccount(BankAccount bankAccount) {
 		this.bankAccount = bankAccount;
 	}
-	
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 }

@@ -28,4 +28,5 @@ public class AdminController {
 		model.addAttribute("users", adminService.findOneCompanyWithUsers(id));
 		return "company-users";
 	}
+	
 }

@@ -35,6 +35,13 @@
 			value="/WEB-INF/jsp-common/expired-session.jsp" />
 		<put-attribute name="current" value="expired-session" />
 	</definition>
+	
+	<definition name="user-register" extends="common">
+		<put-attribute name="title" value="Register form" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp-common/user-register.jsp" />
+		<put-attribute name="current" value="user-register" />
+	</definition>
 
 	<!-- admin -->
 
@@ -50,15 +57,10 @@
 			value="/WEB-INF/jsp-admin/company-users.jsp" />
 		<put-attribute name="current" value="companies" />
 	</definition>
+	
+	
 
 	<!-- user -->
-
-	<definition name="user-register" extends="common">
-		<put-attribute name="title" value="Register form" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp-common/user-register.jsp" />
-		<put-attribute name="current" value="user-register" />
-	</definition>
 
 	<definition name="user-details" extends="common">
 		<put-attribute name="title" value="Company details" />
@@ -71,6 +73,20 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp-user/user-settings.jsp" />
 		<put-attribute name="current" value="user-settings" />
+	</definition>
+	
+	<definition name="edit-company" extends="common">
+		<put-attribute name="title" value="Edit company details" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp-user/edit-company.jsp" />
+		<put-attribute name="current" value="edit-company" />
+	</definition>
+	
+	<definition name="company-details" extends="common">
+		<put-attribute name="title" value="Company details" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp-user/company-details.jsp" />
+		<put-attribute name="current" value="company-details" />
 	</definition>
 
 </tiles-definitions>

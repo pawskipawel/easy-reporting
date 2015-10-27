@@ -17,7 +17,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	List<User> findByCompany(Company company);
 
 	User findByName(String name);
-
-
-
+	
 }
