@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 
 <%@ include file="../layout/taglib.jsp"%>
-
+<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 
 <c:if test="${not empty msg}">
 	<div class="alert alert-success">${msg}</div>
@@ -35,8 +35,9 @@
 									class="col-sm-12 control-label">Company name:</label></td>
 								<td><div class="form-group">
 										<div class="col-sm-12">
-											<form:input path="companyName" cssClass="form-control" />
-
+										<div data-ng-app="" data-ng-init="test='${user.name}'" >
+											<form:input path="companyName" cssClass="form-control" ng-model="test"  />
+</div>
 										</div>
 									</div></td>
 							</tr>
@@ -175,3 +176,8 @@
 <c:out value="${formCompany.companyName}" />
 
 <c:out value="${formCompany.addresses[0].street}" />
+
+
+
+
+

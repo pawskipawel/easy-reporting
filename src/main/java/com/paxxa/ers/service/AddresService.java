@@ -33,7 +33,11 @@ public class AddresService {
 	}
 
 	public List<Address> findAddressesByCompany(Company company) {
-		addressRepository.findByCompany(company);
-		return null;
+		return addressRepository.findByCompany(company);
+		
+	}
+
+	public void saveOrUpdate(Address address) {
+		addressRepository.save(address);
 	}
 }

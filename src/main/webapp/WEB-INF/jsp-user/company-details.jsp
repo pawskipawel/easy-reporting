@@ -36,7 +36,7 @@
 									class="col-sm-12 control-label">Company name:</label></td>
 								<td><div class="form-group">
 										<div class="col-sm-12">
-											<c:out value="${companyDB.companyName}" cssClass="form-control" />
+											<c:out value="${companyDB.companyName}" />
 
 										</div>
 									</div></td>
@@ -179,3 +179,62 @@
 <c:out value="${formCompany.addresses[0].street}" />
 
 <c:out value="${companyDB.companyName}" />
+
+From DB:
+<c:forEach items="${companyAddressessDB}" var="addressDB">
+
+
+
+	<c:out value="${addressDB.street}"></c:out>
+	<c:out value="${addressDB.id}"></c:out>
+
+	<table class="table table-bordered ">
+		<thead>
+			<tr>
+				<th>Fields</th>
+				<th>Edit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><label for="${addressDB.street}"
+					class="col-sm-12 control-label">Street:</label></td>
+				<td><div class="form-group">
+						<div class="col-sm-12">
+							<c:out value="${addressDB.street}"></c:out>
+						</div>
+					</div></td>
+			</tr>
+			<tr>
+				<td><label for="${addressDB.streetNumber}"
+					class="col-sm-12 control-label">Street Number:</label></td>
+				<td><div class="form-group">
+						<div class="col-sm-12">
+							<c:out value="${addressDB.streetNumber}"></c:out>
+						</div>
+					</div></td>
+			</tr>
+			<tr>
+				<td><label for="${addressDB.zipcode}"
+					class="col-sm-12 control-label">Zipcode:</label></td>
+				<td><div class="form-group">
+						<div class="col-sm-12">
+							<c:out value="${addressDB.zipcode}"></c:out>
+						</div>
+					</div></td>
+			</tr>
+			<tr>
+				<td><label for="${addressDB.city}"
+					class="col-sm-12 control-label">City:</label></td>
+				<td><div class="form-group">
+						<div class="col-sm-12">
+						<c:out value="${addressDB.city}"></c:out>
+						</div>
+					</div></td>
+			</tr>
+		</tbody>
+	</table>
+
+</c:forEach>
+
+

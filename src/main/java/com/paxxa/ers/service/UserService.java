@@ -60,6 +60,12 @@ public class UserService {
 	public void saveAndFlush(User user) {
 		userRepository.save(user);	
 	}
+
+
+	public void saveOrUpdate(User user) {
+		userRepository.save(user);	
+		
+	}
 	
 	
 

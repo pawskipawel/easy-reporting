@@ -41,6 +41,12 @@ public class CompanyService {
 		return companyRepository.findByUsers(user);
 		
 	}
+
+
+	public void saveOrUpdate(Company company) {
+		companyRepository.save(company);
+		
+	}
 	
 	
 
