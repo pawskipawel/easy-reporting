@@ -37,13 +37,14 @@ public class UserEditCompanyController {
 	public Company initCompany() {
 		return new Company();
 	}
+		
 
-	@RequestMapping("/user-settings/edit-company")
+	/*@RequestMapping("/user-settings/edit-company")
 	public String settCompanyDetails(Model model, Principal principal) {
 		String name = principal.getName();
 		model.addAttribute("user", userService.findUser(name));
 		return "edit-company";
-	}
+	}*/
 
 	@Transactional
 	@RequestMapping(value = "/user-settings/edit-company", method = RequestMethod.POST)
@@ -99,7 +100,7 @@ public class UserEditCompanyController {
 			// companyService.findAddressesByCompany(companyInList));
 		}
 
-		return "redirect:/user-settings/edit-company/company-details.html";
+		return "redirect:/user-settings/edit-company.html";
 	}
 
 	@RequestMapping("/user-settings/edit-company/company-details")
@@ -116,6 +117,23 @@ public class UserEditCompanyController {
 		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
 		model.addAttribute("companyAddressessDB", addressService.findAddressesByCompany(userCompany));
 		return "company-details";
+	}
+	
+	@RequestMapping("/user-settings/edit-company")
+	public String settCompanyDetails(Model model, Principal principal) {
+		String name = principal.getName();
+	
+		User currentUser = userService.findUser(name);
+
+		List<User> users = new ArrayList<User>();
+		users.add(currentUser);
+
+		Company userCompany = companyService.findCompanyByUser(users);
+
+		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
+		model.addAttribute("companyAddressessDB", addressService.findAddressesByCompany(userCompany));
+		model.addAttribute("user", userService.findUser(name));
+		return "edit-company";
 	}
 
 }

@@ -91,7 +91,7 @@
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
 				<div class="item active">
-					<img class="peopleCarouselImg" src="${pageContext.request.contextPath}/images/coffee.png"
+					<img class="peopleCarouselImg" src="${pageContext.request.contextPath}/resources/images/coffee.png"
 						alt="Chania">
 					<div class="carousel-caption">
 						<h3>Make work easier</h3>
@@ -99,7 +99,7 @@
 					</div>
 				</div>
 				<div class="item">
-					<img src="${pageContext.request.contextPath}/images/clock.png"
+					<img src="${pageContext.request.contextPath}/resources/images/clock.png"
 						alt="Chania">
 					<div class="carousel-caption">
 						<h3>Save time</h3>
@@ -108,7 +108,7 @@
 				</div>
 
 				<div class="item">
-					<img src="${pageContext.request.contextPath}/images/view.png"
+					<img src="${pageContext.request.contextPath}/resources/images/view.png"
 						alt="Chania">
 					<div class="carousel-caption">
 						<h3>Access almost everywhere</h3>

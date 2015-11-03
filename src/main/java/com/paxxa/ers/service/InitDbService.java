@@ -89,6 +89,7 @@ public class InitDbService {
 
 		Company companyX = new Company();
 		companyX.setCompanyName("testCompany");
+		companyX.setEmail("companyX@gmail.com");
 		companyX.setPhone(792600330L);
 		companyX.setNip(5641713529L);
 		companyX.setRegistrationDate(new Date());
