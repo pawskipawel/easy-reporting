@@ -183,8 +183,6 @@
 From DB:
 <c:forEach items="${companyAddressessDB}" var="addressDB">
 
-
-
 	<c:out value="${addressDB.street}"></c:out>
 	<c:out value="${addressDB.id}"></c:out>
 
