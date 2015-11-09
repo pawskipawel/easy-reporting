@@ -89,8 +89,13 @@
 												</div>
 											</div></td>
 									</tr>
+
+
+
 								</tbody>
 							</table>
+
+
 
 						</div>
 					</div>
@@ -124,9 +129,8 @@
 											<td><div class="form-group">
 													<div class="col-sm-12">
 
-														<form:input type="text" path="addresses[${count}].street"
-															ng-model="addresStreet='${address.street}'"
-															cssClass="form-control" />
+														<form:input type="text" path="addresses[${count}].street" 
+															ng-model="addresStreet='${address.street}'" cssClass="form-control" />
 
 													</div>
 												</div> <c:out value="${address.street}" /></td>
@@ -151,8 +155,7 @@
 											<td><div class="form-group">
 													<div class="col-sm-12">
 														<form:input path="addresses[${count}].zipcode"
-															ng-model="addresStreet='${address.zipcode}'"
-															cssClass="form-control" />
+															ng-model="addresStreet='${address.zipcode}'" cssClass="form-control" />
 														<form:errors path="addresses[${count}].zipcode" />
 													</div>
 												</div></td>
@@ -163,8 +166,7 @@
 											<td><div class="form-group">
 													<div class="col-sm-12">
 														<form:input path="addresses[${count}].city"
-															ng-model="addresStreet='${address.city}'"
-															cssClass="form-control" />
+															ng-model="addresStreet='${address.city}'" cssClass="form-control" />
 														<form:errors path="addresses[${count}].city" />
 													</div>
 												</div></td>
@@ -278,7 +280,7 @@
 
 
 		</form:form>
-
+		
 
 		<c:set var="count" value="${1}" scope="page" />
 	</div>
