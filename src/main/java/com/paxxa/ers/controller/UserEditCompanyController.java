@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,20 +23,19 @@ import com.paxxa.ers.service.AddresService;
 import com.paxxa.ers.service.CompanyService;
 import com.paxxa.ers.service.UserService;
 
-
-
 @Transactional
 @Controller
 public class UserEditCompanyController {
 
+	private static final Logger LOGGER = Logger.getLogger(UserEditCompanyController.class); 
 	@Autowired
 	UserService userService;
 	@Autowired
 	CompanyService companyService;
 	@Autowired
 	AddresService addressService;
+
 	
-	//private static final Logger LOGGER = Logger.getLogger(UserEditCompanyController.class);
 
 	@ModelAttribute("company")
 	public Company initCompany() {
@@ -55,8 +55,8 @@ public class UserEditCompanyController {
 			BindingResult result, final RedirectAttributes redirectAttributes) {
 		String name = principal.getName();
 		User currentUser = userService.findUser(name);
-		
-		//LOGGER.debug("test pppppppppppppppppppppppppppp");
+
+		LOGGER.debug("edit company - post");
 
 		List<User> users = new ArrayList<User>();
 		users.add(currentUser);
@@ -82,23 +82,21 @@ public class UserEditCompanyController {
 		List<Company> companyInList = new ArrayList<Company>();
 		companyInList.add(companyService.findCompanyByUser(users));
 		if (!addressService.findAddressesByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
+			
+			LOGGER.info("Address list exists");
 			List<Address> companyAddresses = addressService
 					.findAddressesByCompany(companyService.findCompanyByUser(users));
 			List<Address> addressesOfCompanyForm = formCompany.getAddresses();
 			
-			System.out.println(companyAddresses);
-			System.out.println("break");
-			System.out.println(addressesOfCompanyForm);
-
+			LOGGER.info("List from DB" + companyAddresses + "is empty: " + companyAddresses.isEmpty() );
+			LOGGER.info("List from form" + addressesOfCompanyForm + "is empty: " + addressesOfCompanyForm.isEmpty() );
 			// Check after ID if address already exists in DB
 			for (Address addressFromForm : addressesOfCompanyForm) {
 				
-				System.out.println("petla 1 " + addressFromForm.getId());
-
 				for (Address addressOfCompany : companyAddresses) {
-					
+
 					System.out.println("petla 2 " + addressFromForm.getId());
-					
+
 					if (addressFromForm.getId() == addressOfCompany.getId()) {
 						Address existingCompanyAddress = addressService.findById(addressFromForm.getId());
 						existingCompanyAddress.setStreet(addressOfCompany.getStreet());
@@ -106,11 +104,10 @@ public class UserEditCompanyController {
 						existingCompanyAddress.setZipcode(addressOfCompany.getZipcode());
 						existingCompanyAddress.setCity(addressOfCompany.getCity());
 						addressService.saveAndFlush(existingCompanyAddress);
-						
-						
-					} 
+
+					}
 				}
-				
+
 			}
 		}
 
@@ -154,11 +151,9 @@ public class UserEditCompanyController {
 	@RequestMapping("/user-settings/edit-company")
 	public String settCompanyDetails(Model model, Principal principal) {
 		String name = principal.getName();
-		
-		/*LOGGER.debug("test zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
-		LOGGER.info("This is an info log entry");
-		LOGGER.error("This is an error log entry");
-*/
+
+		LOGGER.debug("show edit company - get");
+
 		User currentUser = userService.findUser(name);
 
 		List<User> users = new ArrayList<User>();
