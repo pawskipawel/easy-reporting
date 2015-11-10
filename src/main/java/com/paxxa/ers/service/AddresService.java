@@ -40,4 +40,8 @@ public class AddresService {
 	public void saveOrUpdate(Address address) {
 		addressRepository.save(address);
 	}
+
+	public Address findById(Integer id) {
+		return addressRepository.findById(id);
+	}
 }

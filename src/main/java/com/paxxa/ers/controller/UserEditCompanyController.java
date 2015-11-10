@@ -22,6 +22,8 @@ import com.paxxa.ers.service.AddresService;
 import com.paxxa.ers.service.CompanyService;
 import com.paxxa.ers.service.UserService;
 
+
+
 @Transactional
 @Controller
 public class UserEditCompanyController {
@@ -32,19 +34,20 @@ public class UserEditCompanyController {
 	CompanyService companyService;
 	@Autowired
 	AddresService addressService;
+	
+	//private static final Logger LOGGER = Logger.getLogger(UserEditCompanyController.class);
 
 	@ModelAttribute("company")
 	public Company initCompany() {
 		return new Company();
 	}
-		
 
-	/*@RequestMapping("/user-settings/edit-company")
-	public String settCompanyDetails(Model model, Principal principal) {
-		String name = principal.getName();
-		model.addAttribute("user", userService.findUser(name));
-		return "edit-company";
-	}*/
+	/*
+	 * @RequestMapping("/user-settings/edit-company") public String
+	 * settCompanyDetails(Model model, Principal principal) { String name =
+	 * principal.getName(); model.addAttribute("user",
+	 * userService.findUser(name)); return "edit-company"; }
+	 */
 
 	@Transactional
 	@RequestMapping(value = "/user-settings/edit-company", method = RequestMethod.POST)
@@ -52,10 +55,12 @@ public class UserEditCompanyController {
 			BindingResult result, final RedirectAttributes redirectAttributes) {
 		String name = principal.getName();
 		User currentUser = userService.findUser(name);
+		
+		//LOGGER.debug("test pppppppppppppppppppppppppppp");
 
 		List<User> users = new ArrayList<User>();
 		users.add(currentUser);
-		
+
 		// Company entity
 		if (companyService.findCompanyByUser(users) != null) {
 			Company existingCompany = companyService.findCompanyByUser(users);
@@ -68,7 +73,7 @@ public class UserEditCompanyController {
 		}
 		if (companyService.findCompanyByUser(users) == null) {
 			formCompany.setUsers(users);
-			companyService.create(formCompany); 
+			companyService.create(formCompany);
 			currentUser.setCompany(formCompany);
 			userService.saveAndFlush(currentUser);
 		}
@@ -77,9 +82,36 @@ public class UserEditCompanyController {
 		List<Company> companyInList = new ArrayList<Company>();
 		companyInList.add(companyService.findCompanyByUser(users));
 		if (!addressService.findAddressesByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
-			List<Address> companyAddresses = addressService.findAddressesByCompany(companyService.findCompanyByUser(users));
+			List<Address> companyAddresses = addressService
+					.findAddressesByCompany(companyService.findCompanyByUser(users));
 			List<Address> addressesOfCompanyForm = formCompany.getAddresses();
-			System.out.println("NOT EMPTY");
+			
+			System.out.println(companyAddresses);
+			System.out.println("break");
+			System.out.println(addressesOfCompanyForm);
+
+			// Check after ID if address already exists in DB
+			for (Address addressFromForm : addressesOfCompanyForm) {
+				
+				System.out.println("petla 1 " + addressFromForm.getId());
+
+				for (Address addressOfCompany : companyAddresses) {
+					
+					System.out.println("petla 2 " + addressFromForm.getId());
+					
+					if (addressFromForm.getId() == addressOfCompany.getId()) {
+						Address existingCompanyAddress = addressService.findById(addressFromForm.getId());
+						existingCompanyAddress.setStreet(addressOfCompany.getStreet());
+						existingCompanyAddress.setStreetNumber(addressOfCompany.getStreetNumber());
+						existingCompanyAddress.setZipcode(addressOfCompany.getZipcode());
+						existingCompanyAddress.setCity(addressOfCompany.getCity());
+						addressService.saveAndFlush(existingCompanyAddress);
+						
+						
+					} 
+				}
+				
+			}
 		}
 
 		if (addressService.findAddressesByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
@@ -118,11 +150,15 @@ public class UserEditCompanyController {
 		model.addAttribute("companyAddressessDB", addressService.findAddressesByCompany(userCompany));
 		return "company-details";
 	}
-	
+
 	@RequestMapping("/user-settings/edit-company")
 	public String settCompanyDetails(Model model, Principal principal) {
 		String name = principal.getName();
-	
+		
+		/*LOGGER.debug("test zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+		LOGGER.info("This is an info log entry");
+		LOGGER.error("This is an error log entry");
+*/
 		User currentUser = userService.findUser(name);
 
 		List<User> users = new ArrayList<User>();

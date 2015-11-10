@@ -40,6 +40,15 @@
 			<version>${spring.security.version}</version>
 		</dependency>
 
+		<!-- log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+			<scope>runtime</scope>
+		</dependency>
+	
+
 
 
 		<!-- Dependencies for apache tiles -->
@@ -263,6 +272,10 @@
 					</connectors>
 				</configuration>
 			</plugin>
+
+
+
+
 
 		</plugins>
 	</build>

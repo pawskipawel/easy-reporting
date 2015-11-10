@@ -114,6 +114,9 @@
 							<c:set var="count" value="-1" scope="page" />
 							<c:forEach items="${companyAddressessDB}" var="address">
 								<c:set var="count" value="${count+1}" scope="page" />
+							<!--  input field for entity ID-->
+							<form:input type="hidden" path="addresses[${count}].id"  />
+
 								<table class="table table-bordered ">
 									<thead>
 										<tr>
@@ -127,13 +130,16 @@
 											<td><label for="addresses[${count}].street"
 												class="col-sm-12 control-label">Street:</label></td>
 											<td><div class="form-group">
-													<div class="col-sm-12">
-
+													<div class="col-sm-12">													
 														<form:input type="text" path="addresses[${count}].street" 
-															ng-model="addresStreet='${address.street}'" cssClass="form-control" />
-
+														 value="${address.street}"
+															 cssClass="form-control" />		
+															 
+															 <c:out value="${address.id}"/>
+															 									
 													</div>
-												</div> <c:out value="${address.street}" /></td>
+												</div> 
+												</td>
 										</tr>
 
 										<tr>
@@ -142,9 +148,9 @@
 											<td><div class="form-group">
 													<div class="col-sm-12">
 														<form:input path="addresses[${count}].streetNumber"
-															ng-model="addresStreet='${address.streetNumber}'"
+														value="${address.streetNumber}"
 															cssClass="form-control" />
-
+															
 													</div>
 												</div></td>
 										</tr>
@@ -153,10 +159,11 @@
 											<td><label for="addresses[${count}].zipcode"
 												class="col-sm-12 control-label">Zipcode:</label></td>
 											<td><div class="form-group">
-													<div class="col-sm-12">
+													<div class="col-sm-12">														
 														<form:input path="addresses[${count}].zipcode"
-															ng-model="addresStreet='${address.zipcode}'" cssClass="form-control" />
+															value="${address.zipcode}" cssClass="form-control" />
 														<form:errors path="addresses[${count}].zipcode" />
+													
 													</div>
 												</div></td>
 										</tr>
@@ -166,8 +173,9 @@
 											<td><div class="form-group">
 													<div class="col-sm-12">
 														<form:input path="addresses[${count}].city"
-															ng-model="addresStreet='${address.city}'" cssClass="form-control" />
+															value="${address.city}" cssClass="form-control" />
 														<form:errors path="addresses[${count}].city" />
+														</div>
 													</div>
 												</div></td>
 										</tr>
@@ -237,7 +245,7 @@
 									<tr>
 
 										<td colspan="2">
-											<div id="addButtonDiv">
+											<div id="removeButtonDiv">
 												<button type="button" id="removeAddedAddress"
 													class="btn btn-warning removebutton">
 													Remove address <span class="glyphicon glyphicon-minus"></span>
@@ -282,7 +290,7 @@
 		</form:form>
 		
 
-		<c:set var="count" value="${1}" scope="page" />
+	
 	</div>
 </div>
 
@@ -300,24 +308,29 @@
 	
 	// jQuery 
 	$(document).ready(function() {
-		var MaxInputs = 2;
-		var InputsWrapper = $("#AddAddressesList");
+		var MaxInputs = 2; // counting starts from 0
+		var Outputcounter = ${count}; // already displaded addresses from DB.
 		var AddAddressButton = $("#AddAddress");
-		var x = InputsWrapper.length
-		var addressIndex = -1; // tutaj powinna byc zmienna licznik z loopa do widoku po pobraniu z bazy 
+	
+		var addressIndex = -1; // variable index for list index : addreess[index]
 		
+		// condition for addAddress button located in general main table. 
+		if(Outputcounter >= MaxInputs) {
+	            $("#AddMoreAddressId").hide();
+	        }
 		
+	
 		
 		$(AddAddressButton).click(function (e){
-			if(addressIndex <= MaxInputs) {
+			if(Outputcounter <= MaxInputs) {
 		addressIndex++;
-	
+		Outputcounter++;
 		var $template = $('#addressTemlate'),
          $clone    = $template
                          .clone()
                          .removeClass('hide')
                          .removeAttr('id')
-                         .attr('data-address-index', addressIndex)
+                         
                          .insertBefore($template);
 		// find attribute "name" insrtead "path" - reason spring convertion -other way does not working
 		$clone
@@ -334,8 +347,7 @@
         .find('[for="addresses[0].city"]').attr('for', 'addresses[' + addressIndex + '].city').end();
 		
 		 $("#AddMoreAddressId").show();
-		
-		if(addressIndex == 3) {
+		 if(Outputcounter == MaxInputs) {
             $("#AddMoreAddressId").hide();
         }
 		
@@ -344,15 +356,12 @@
 		})
 		
 		
-		var removeAddedAddress = $('#removeAddedAddress');
-		$(removeAddedAddress).click(function (){
-		$('#addDiv').closest('table').remove();
-		})
 		// You need to use event delegation (and class selector) because those buttons don't exist on load, but are created in table 
 		$(document).on('click', 'button.removebutton', function () {
-			$('#addButtonDiv').closest('table').remove();
+			$(this).closest('table').remove();
 			addressIndex--;
-			if(addressIndex == addressIndex) {
+			Outputcounter--;
+			if(Outputcounter < MaxInputs) {
 	            $("#AddMoreAddressId").show();
 	        }
 		     return false;
@@ -360,9 +369,3 @@
 		
 	});
 </script>
-
-
-
-
-
-
