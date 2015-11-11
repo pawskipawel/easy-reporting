@@ -27,7 +27,7 @@ import com.paxxa.ers.service.UserService;
 @Controller
 public class UserEditCompanyController {
 
-	private static final Logger LOGGER = Logger.getLogger(UserEditCompanyController.class); 
+	private static final Logger logger = Logger.getLogger(UserEditCompanyController.class); 
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -42,12 +42,6 @@ public class UserEditCompanyController {
 		return new Company();
 	}
 
-	/*
-	 * @RequestMapping("/user-settings/edit-company") public String
-	 * settCompanyDetails(Model model, Principal principal) { String name =
-	 * principal.getName(); model.addAttribute("user",
-	 * userService.findUser(name)); return "edit-company"; }
-	 */
 
 	@Transactional
 	@RequestMapping(value = "/user-settings/edit-company", method = RequestMethod.POST)
@@ -56,7 +50,7 @@ public class UserEditCompanyController {
 		String name = principal.getName();
 		User currentUser = userService.findUser(name);
 
-		LOGGER.debug("edit company - post");
+		logger.debug("edit company - post");
 
 		List<User> users = new ArrayList<User>();
 		users.add(currentUser);
@@ -83,27 +77,35 @@ public class UserEditCompanyController {
 		companyInList.add(companyService.findCompanyByUser(users));
 		if (!addressService.findAddressesByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
 			
-			LOGGER.info("Address list exists");
+			logger.info("Address list exists");
 			List<Address> companyAddresses = addressService
 					.findAddressesByCompany(companyService.findCompanyByUser(users));
 			List<Address> addressesOfCompanyForm = formCompany.getAddresses();
-			
-			LOGGER.info("List from DB" + companyAddresses + "is empty: " + companyAddresses.isEmpty() );
-			LOGGER.info("List from form" + addressesOfCompanyForm + "is empty: " + addressesOfCompanyForm.isEmpty() );
+		
+			logger.info("List from DB" + companyAddresses + "size: " + companyAddresses.size() );
+			logger.info("List from FORM" + addressesOfCompanyForm + "size: " + addressesOfCompanyForm.size());
 			// Check after ID if address already exists in DB
-			for (Address addressFromForm : addressesOfCompanyForm) {
+			for (Address addressFromForm : addressesOfCompanyForm) {	
+				logger.info("searching in loop 1: " + addressFromForm.getId());
+				if(addressFromForm.getId() == null){
+					logger.info("address with id == null");
+					addressFromForm.setCompany(companyService.findCompanyByUser(users));
+					addressService.saveOrUpdate(addressFromForm);
+					//addressesOfCompanyForm.remove(addressFromForm);
+					// Is is good solution ? should I remove object from list ? 
+				}
 				
 				for (Address addressOfCompany : companyAddresses) {
+					logger.info("searching in loop 2: " + addressOfCompany.getId());
+					logger.info("searching in loop 2 for entity id from loop1: " + addressFromForm.getId());
 
-					System.out.println("petla 2 " + addressFromForm.getId());
-
-					if (addressFromForm.getId() == addressOfCompany.getId()) {
+					if (addressFromForm.getId() == (addressOfCompany.getId())) {
 						Address existingCompanyAddress = addressService.findById(addressFromForm.getId());
-						existingCompanyAddress.setStreet(addressOfCompany.getStreet());
-						existingCompanyAddress.setStreetNumber(addressOfCompany.getStreetNumber());
-						existingCompanyAddress.setZipcode(addressOfCompany.getZipcode());
-						existingCompanyAddress.setCity(addressOfCompany.getCity());
-						addressService.saveAndFlush(existingCompanyAddress);
+						existingCompanyAddress.setStreet(addressFromForm.getStreet());
+						existingCompanyAddress.setStreetNumber(addressFromForm.getStreetNumber());
+						existingCompanyAddress.setZipcode(addressFromForm.getZipcode());
+						existingCompanyAddress.setCity(addressFromForm.getCity());
+						addressService.saveOrUpdate(existingCompanyAddress);
 
 					}
 				}
@@ -112,6 +114,7 @@ public class UserEditCompanyController {
 		}
 
 		if (addressService.findAddressesByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
+			logger.info("Address list does not exists - save all list from form");
 			List<Address> addressesOfCompanyForm = formCompany.getAddresses();
 			for (Address address : addressesOfCompanyForm) {
 				address.setCompany(companyService.findCompanyByUser(users));
@@ -132,7 +135,7 @@ public class UserEditCompanyController {
 		return "redirect:/user-settings/edit-company.html";
 	}
 
-	@RequestMapping("/user-settings/edit-company/company-details")
+	/*@RequestMapping("/user-settings/edit-company/company-details")
 	public String companyDetails(Model model, Principal principal) {
 
 		String name = principal.getName();
@@ -146,13 +149,13 @@ public class UserEditCompanyController {
 		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
 		model.addAttribute("companyAddressessDB", addressService.findAddressesByCompany(userCompany));
 		return "company-details";
-	}
+	}*/
 
 	@RequestMapping("/user-settings/edit-company")
 	public String settCompanyDetails(Model model, Principal principal) {
 		String name = principal.getName();
 
-		LOGGER.debug("show edit company - get");
+		logger.debug("show edit company - get");
 
 		User currentUser = userService.findUser(name);
 

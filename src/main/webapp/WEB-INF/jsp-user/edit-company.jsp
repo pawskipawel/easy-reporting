@@ -115,7 +115,7 @@
 							<c:forEach items="${companyAddressessDB}" var="address">
 								<c:set var="count" value="${count+1}" scope="page" />
 							<!--  input field for entity ID-->
-							<form:input type="hidden" path="addresses[${count}].id"  />
+							<form:input type="hidden" path="addresses[${count}].id" value="${address.id}" />
 
 								<table class="table table-bordered ">
 									<thead>
@@ -308,11 +308,11 @@
 	
 	// jQuery 
 	$(document).ready(function() {
-		var MaxInputs = 2; // counting starts from 0
-		var Outputcounter = ${count}; // already displaded addresses from DB.
+		var MaxInputs = 2; // counting starts from 0 including 0
+		var Outputcounter = ${count}; // (must start form -1) already displayed addresses from DB ->REQUIRE INTEGRATION   
 		var AddAddressButton = $("#AddAddress");
 	
-		var addressIndex = -1; // variable index for list index : addreess[index]
+		var addressIndex = ${count}; // variable index for list index (must start form -1): addreess[index] ->REQUIRE INTEGRATION   
 		
 		// condition for addAddress button located in general main table. 
 		if(Outputcounter >= MaxInputs) {
