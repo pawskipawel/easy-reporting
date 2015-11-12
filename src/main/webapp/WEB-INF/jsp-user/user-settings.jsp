@@ -25,7 +25,7 @@
 
 
 				<div class="list-group">
-					<a href='<spring:url value="/user-settings/edit-company.html"></spring:url>' class="list-group-item">Company details</a>
+					<a href='<spring:url value="/user-settings/company-details.html"></spring:url>' class="list-group-item">Company details</a>
 					<a href="#" class="list-group-item">Users</a>
 				</div>
 

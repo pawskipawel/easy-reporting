@@ -27,7 +27,7 @@ import com.paxxa.ers.service.UserService;
 @Controller
 public class UserEditCompanyController {
 
-	private static final Logger logger = Logger.getLogger(UserEditCompanyController.class); 
+	private static final Logger logger = Logger.getLogger(UserEditCompanyController.class);
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -35,13 +35,26 @@ public class UserEditCompanyController {
 	@Autowired
 	AddresService addressService;
 
-	
-
 	@ModelAttribute("company")
 	public Company initCompany() {
 		return new Company();
 	}
 
+	@RequestMapping("/user-settings/edit-company")
+	public String settCompanyDetails(Model model, Principal principal) {
+		logger.debug("show edit company - get");
+
+		String name = principal.getName();
+		User currentUser = userService.findUser(name);
+		List<User> users = new ArrayList<User>();
+		users.add(currentUser);
+		Company userCompany = companyService.findCompanyByUser(users);
+
+		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
+		model.addAttribute("companyAddressessDB", addressService.findAddressesByCompany(userCompany));
+		model.addAttribute("user", userService.findUser(name));
+		return "edit-company";
+	}
 
 	@Transactional
 	@RequestMapping(value = "/user-settings/edit-company", method = RequestMethod.POST)
@@ -55,7 +68,10 @@ public class UserEditCompanyController {
 		List<User> users = new ArrayList<User>();
 		users.add(currentUser);
 
-		// Company entity
+		/*
+		 * Part responsible for saving and updating Company entity without
+		 * references
+		 */
 		if (companyService.findCompanyByUser(users) != null) {
 			Company existingCompany = companyService.findCompanyByUser(users);
 			existingCompany.setCompanyName(formCompany.getCompanyName());
@@ -71,30 +87,41 @@ public class UserEditCompanyController {
 			currentUser.setCompany(formCompany);
 			userService.saveAndFlush(currentUser);
 		}
-
-		// Address entity
+		/*
+		 * Part responsible for saving and updating List of Addresses for
+		 * Company entity
+		 */
 		List<Company> companyInList = new ArrayList<Company>();
 		companyInList.add(companyService.findCompanyByUser(users));
 		if (!addressService.findAddressesByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
-			
+
 			logger.info("Address list exists");
 			List<Address> companyAddresses = addressService
 					.findAddressesByCompany(companyService.findCompanyByUser(users));
 			List<Address> addressesOfCompanyForm = formCompany.getAddresses();
-		
-			logger.info("List from DB" + companyAddresses + "size: " + companyAddresses.size() );
+
+			logger.info("List from DB" + companyAddresses + "size: " + companyAddresses.size());
 			logger.info("List from FORM" + addressesOfCompanyForm + "size: " + addressesOfCompanyForm.size());
 			// Check after ID if address already exists in DB
-			for (Address addressFromForm : addressesOfCompanyForm) {	
+			for (Address addressFromForm : addressesOfCompanyForm) {
 				logger.info("searching in loop 1: " + addressFromForm.getId());
-				if(addressFromForm.getId() == null){
+
+				/*
+				 * block for saving dynamically added addresses (they do not
+				 * contain ID) and prevention of saving into DB an empty
+				 * entities created after dynamically removing not-last object
+				 * form list (reason is not updated incrementation)
+				 */
+				if (addressFromForm.getId() == null && addressFromForm.getCity() != null
+						&& addressFromForm.getStreet() != null) {
 					logger.info("address with id == null");
 					addressFromForm.setCompany(companyService.findCompanyByUser(users));
 					addressService.saveOrUpdate(addressFromForm);
-					//addressesOfCompanyForm.remove(addressFromForm);
-					// Is is good solution ? should I remove object from list ? 
+					// addressesOfCompanyForm.remove(addressFromForm);
+					// Is is good solution ? should I remove object from
+					// list ?
 				}
-				
+
 				for (Address addressOfCompany : companyAddresses) {
 					logger.info("searching in loop 2: " + addressOfCompany.getId());
 					logger.info("searching in loop 2 for entity id from loop1: " + addressFromForm.getId());
@@ -106,19 +133,26 @@ public class UserEditCompanyController {
 						existingCompanyAddress.setZipcode(addressFromForm.getZipcode());
 						existingCompanyAddress.setCity(addressFromForm.getCity());
 						addressService.saveOrUpdate(existingCompanyAddress);
-
 					}
 				}
-
 			}
 		}
 
+		/*
+		 * Block responsible for initial data saving in DB, with condition for
+		 * no addresses for company block save all addresses list without cases
+		 * where address is empty (empty address entity is passed when
+		 * dynamically in view addresses are added and removed not from the last
+		 * one on list - which lead to incorrect incrementation
+		 */
 		if (addressService.findAddressesByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
 			logger.info("Address list does not exists - save all list from form");
 			List<Address> addressesOfCompanyForm = formCompany.getAddresses();
 			for (Address address : addressesOfCompanyForm) {
-				address.setCompany(companyService.findCompanyByUser(users));
-				addressService.saveAndFlush(address);
+				if (address.getCity() != null && address.getStreet() != null) {
+					address.setCompany(companyService.findCompanyByUser(users));
+					addressService.saveAndFlush(address);
+				}
 			}
 
 		}
@@ -132,42 +166,23 @@ public class UserEditCompanyController {
 			// companyService.findAddressesByCompany(companyInList));
 		}
 
-		return "redirect:/user-settings/edit-company.html";
+		return "redirect:/user-settings/company-details.html";
 	}
 
-	/*@RequestMapping("/user-settings/edit-company/company-details")
+	@RequestMapping("/user-settings/company-details")
 	public String companyDetails(Model model, Principal principal) {
+		logger.debug("show  company details");
 
 		String name = principal.getName();
 		User currentUser = userService.findUser(name);
-
 		List<User> users = new ArrayList<User>();
 		users.add(currentUser);
-
-		Company userCompany = companyService.findCompanyByUser(users);
-
-		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
-		model.addAttribute("companyAddressessDB", addressService.findAddressesByCompany(userCompany));
-		return "company-details";
-	}*/
-
-	@RequestMapping("/user-settings/edit-company")
-	public String settCompanyDetails(Model model, Principal principal) {
-		String name = principal.getName();
-
-		logger.debug("show edit company - get");
-
-		User currentUser = userService.findUser(name);
-
-		List<User> users = new ArrayList<User>();
-		users.add(currentUser);
-
 		Company userCompany = companyService.findCompanyByUser(users);
 
 		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
 		model.addAttribute("companyAddressessDB", addressService.findAddressesByCompany(userCompany));
 		model.addAttribute("user", userService.findUser(name));
-		return "edit-company";
+		return "company-details";
 	}
 
 }

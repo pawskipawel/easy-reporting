@@ -41,7 +41,7 @@
 							<table class="table table-bordered ">
 								<thead>
 									<tr>
-										<th>Fields</th>
+										<th class="col-md-4" >Fields</th>
 										<th>Edit</th>
 									</tr>
 								</thead>
@@ -120,7 +120,7 @@
 								<table class="table table-bordered ">
 									<thead>
 										<tr>
-											<th>Fields</th>
+											<th class="col-md-4">Fields</th>
 											<th>Edit</th>
 										</tr>
 									</thead>
@@ -177,20 +177,81 @@
 														<form:errors path="addresses[${count}].city" />
 														</div>
 													</div>
-												</div></td>
+												</td>
 										</tr>
 									</tbody>
 								</table>
 
 							</c:forEach>
+							
+							<!--  Default address form visible when there is no address in DB-->
+							<c:if test="${count == -1}">
+							<table class="table table-bordered" >
+								<thead>
+									<tr>
+										<th class="col-md-4">Fields</th>
+										<th>Edit</th>
+									</tr>
+								</thead>
+								<tbody>
 
+									<tr>
+										<td><label for="addresses[0].street"
+											class="col-sm-12 control-label">Street:</label></td>
+										<td><div class="form-group" id="addStreet">
+												<div class="col-sm-12">
+													<form:input id="street" path="addresses[0].street"
+														cssClass="form-control" />
+
+												</div>
+											</div></td>
+									</tr>
+
+									<tr>
+										<td><label for="addresses[0].streetNumber"
+											class="col-sm-12 control-label">Street Number:</label></td>
+										<td><div class="form-group">
+												<div class="col-sm-12">
+													<form:input path="addresses[0].streetNumber"
+														cssClass="form-control"  />
+
+												</div>
+											</div></td>
+									</tr>
+
+									<tr>
+										<td><label for="addresses[0].zipcode"
+											class="col-sm-12 control-label">Zipcode:</label></td>
+										<td><div class="form-group">
+												<div class="col-sm-12">
+													<form:input path="addresses[0].zipcode"
+														cssClass="form-control" />
+													<form:errors path="addresses[0].zipcode" />
+												</div>
+											</div></td>
+									</tr>
+									<tr>
+										<td><label for="addresses[0].city"
+											class="col-sm-12 control-label">City:</label></td>
+										<td><div class="form-group">
+												<div class="col-sm-12">
+													<form:input path="addresses[0].city"
+														cssClass="form-control"  />
+													<form:errors path="addresses[0].city" />
+												</div>
+											</div></td>
+									</tr>
+									
+								</tbody>
+							</table>
+							</c:if>
 
 							<!-- The template for adding new address -->
 
 							<table class="table table-bordered hide" id="addressTemlate">
 								<thead>
 									<tr>
-										<th>Fields</th>
+										<th class="col-md-4">Fields</th>
 										<th>Edit</th>
 									</tr>
 								</thead>
@@ -261,11 +322,10 @@
 									Add address <span class="glyphicon glyphicon-plus"></span>
 								</button>
 							</div>
-
+	
 						</div>
 					</div>
 				</div>
-
 
 			</div>
 
@@ -274,7 +334,7 @@
 				<div class="col-md-4">
 					<center>
 
-						<a href="<spring:url value="/user-settings.html"></spring:url>"
+						<a href="<spring:url value="/user-settings/company-details.html"></spring:url>"
 							type="button" class="btn btn-danger">Cancel <span
 							class="glyphicon glyphicon-remove"></span>
 						</a>
@@ -288,9 +348,7 @@
 
 
 		</form:form>
-		
 
-	
 	</div>
 </div>
 
@@ -312,12 +370,14 @@
 		var Outputcounter = ${count}; // (must start form -1) already displayed addresses from DB ->REQUIRE INTEGRATION   
 		var AddAddressButton = $("#AddAddress");
 	
-		var addressIndex = ${count}; // variable index for list index (must start form -1): addreess[index] ->REQUIRE INTEGRATION   
+		var addressIndex = ${count+1}; // variable index for list index (must start form -1): deafault addreess[index] ->REQUIRE INTEGRATION   
 		
 		// condition for addAddress button located in general main table. 
 		if(Outputcounter >= MaxInputs) {
 	            $("#AddMoreAddressId").hide();
 	        }
+		
+		
 		
 	
 		
@@ -329,8 +389,7 @@
          $clone    = $template
                          .clone()
                          .removeClass('hide')
-                         .removeAttr('id')
-                         
+                         .removeAttr('id')                         
                          .insertBefore($template);
 		// find attribute "name" insrtead "path" - reason spring convertion -other way does not working
 		$clone
@@ -354,6 +413,12 @@
 			}
 			return false;
 		})
+		
+		// if there is no address then on load add form for address
+		//if(Outputcounter == -1){
+		//	$(AddAddressButton).trigger("click");
+		//}
+
 		
 		
 		// You need to use event delegation (and class selector) because those buttons don't exist on load, but are created in table 
