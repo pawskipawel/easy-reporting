@@ -81,7 +81,10 @@
 									<tr>
 
 										<td><label class="col-sm-12 control-label">Street:</label></td>
-										<td><c:out value="${address.street}" /></td>
+										<td><c:out value="${address.street}" />
+										<c:out value="${address.isDeleted}"/>
+										<c:out value="${address.id}"/>
+										</td>
 									</tr>
 									<tr>
 										<td><label class="col-sm-12 control-label">Street

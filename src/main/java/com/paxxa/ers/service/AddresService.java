@@ -34,7 +34,10 @@ public class AddresService {
 
 	public List<Address> findAddressesByCompany(Company company) {
 		return addressRepository.findByCompany(company);
-		
+	}
+	
+	public List<Address> findByCompanyNotDeletedAddresses(Company company){
+		return addressRepository.findByCompanyAndIsDeletedIsFalse(company);
 	}
 
 	public void saveOrUpdate(Address address) {

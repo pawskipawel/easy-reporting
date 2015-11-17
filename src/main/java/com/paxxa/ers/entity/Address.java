@@ -1,5 +1,7 @@
 package com.paxxa.ers.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,12 @@ public class Address {
 	private Integer id;
 
 	private String street;
+	
+	private Boolean isDeleted = false;
+	
+	private Integer revisionNumber;
+	
+	private Date revisionDate;
 
 	@Column(name = "street_number")
 	private String streetNumber;
@@ -49,6 +57,32 @@ public class Address {
 
 	public void setStreetNumber(String streetNumber) {
 		this.streetNumber = streetNumber;
+	}
+	
+	
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Integer getRevisionNumber() {
+		return revisionNumber;
+	}
+
+	public void setRevisionNumber(Integer revisionNumber) {
+		this.revisionNumber = revisionNumber;
+	}
+
+	public Date getRevisionDate() {
+		return revisionDate;
+	}
+
+	public void setRevisionDate(Date revisionDate) {
+		this.revisionDate = revisionDate;
 	}
 
 	public String getZipcode() {

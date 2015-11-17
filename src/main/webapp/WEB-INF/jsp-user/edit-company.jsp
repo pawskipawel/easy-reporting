@@ -110,7 +110,7 @@
 						</div>
 						<div class="panel-body">
 
-
+							<!-- loop for addresses  -->
 							<c:set var="count" value="-1" scope="page" />
 							<c:forEach items="${companyAddressessDB}" var="address">
 								<c:set var="count" value="${count+1}" scope="page" />
@@ -179,6 +179,20 @@
 													</div>
 												</td>
 										</tr>
+										<tr>										
+										<td colspan="2">
+										<input type="radio" name="InvoiceAddres" value="male"> Set as default address on invoice<br><br>
+										<input type="hidden" name="addressesToDelete[]" value="${address.id}" disabled/>
+											<div id="removeButtonDiv">
+												<button type="button"
+													class="btn btn-warning removeAddressFromDB">
+													Remove address <span class="glyphicon glyphicon-minus"></span>
+												</button>
+											</div>
+											
+											
+										</td>
+									</tr>
 									</tbody>
 								</table>
 
@@ -241,6 +255,11 @@
 												</div>
 											</div></td>
 									</tr>
+									<tr>
+									<td class="hide" ><input type="hidden" name="addressesToDelete" disabled/></td>
+									
+									</tr>
+									
 									
 								</tbody>
 							</table>
@@ -345,6 +364,12 @@
 				</center>
 				<div class="col-md-4"></div>
 			</div>
+			
+			
+			
+			<!-- <input type="hidden" name="testVar[]" value="2"/>
+			<input type="hidden" name="testVar[]" value=""/>
+			<input type="hidden" name="testVar[]" value="3"/>  -->
 
 
 		</form:form>
@@ -414,12 +439,6 @@
 			return false;
 		})
 		
-		// if there is no address then on load add form for address
-		//if(Outputcounter == -1){
-		//	$(AddAddressButton).trigger("click");
-		//}
-
-		
 		
 		// You need to use event delegation (and class selector) because those buttons don't exist on load, but are created in table 
 		$(document).on('click', 'button.removebutton', function () {
@@ -431,6 +450,14 @@
 	        }
 		     return false;
 		 });
+		
+		$(document).on('click', 'button.removeAddressFromDB', function () {
+			$(this).closest('table').find("input").prop('disabled', false)
+			$(this).closest('table').hide();
+		     return false;
+		 });
+		
+		
 		
 	});
 </script>
