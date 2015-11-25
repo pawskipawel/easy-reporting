@@ -136,10 +136,10 @@ public class InitDbService {
 		addressRepository.save(addressCompanyX);
 		
 		BankAccount bankAccount1CompanyX = new BankAccount();
-		bankAccount1CompanyX.setAccount("101010101010101010101010");
+		bankAccount1CompanyX.setAccountNumber("101010101010101010101010");
 		bankAccount1CompanyX.setDescription("mbank");
 		bankAccount1CompanyX.setCompany(companyZ);
-		bankAccount1CompanyX.setDeafult(true);
+		bankAccount1CompanyX.setDeafultBankAccountInvoice(true);
 		bankAccountRepository.save(bankAccount1CompanyX);
 		
 		PaymentType paymentTypeCash = new PaymentType();

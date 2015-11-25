@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paxxa.ers.entity.Address;
+import com.paxxa.ers.entity.BankAccount;
 import com.paxxa.ers.entity.Company;
 import com.paxxa.ers.entity.User;
 import com.paxxa.ers.service.AddresService;
+import com.paxxa.ers.service.BankAccountService;
 import com.paxxa.ers.service.CompanyService;
 import com.paxxa.ers.service.UserService;
 
@@ -36,6 +38,8 @@ public class UserEditCompanyController {
 	CompanyService companyService;
 	@Autowired
 	AddresService addressService;
+	@Autowired
+	BankAccountService bankAccountService;
 
 	@ModelAttribute("company")
 	public Company initCompany() {
@@ -54,6 +58,7 @@ public class UserEditCompanyController {
 
 		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
 		model.addAttribute("companyAddressessDB", addressService.findByCompanyNotDeletedAddresses(userCompany));
+		model.addAttribute("companyBankAccountsDb", bankAccountService.findByCompanyNotDeletedBankAccounts(userCompany));
 		model.addAttribute("user", userService.findUser(name));
 		return "edit-company";
 	}
@@ -227,6 +232,25 @@ public class UserEditCompanyController {
 
 			}
 		}
+		
+		// Bank account 
+		
+		if(bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users)).isEmpty()){
+			logger.info("Bank account list does not exists - save all list from form");
+			List<BankAccount> bankAccountsOfCompanyForm = formCompany.getBankAccount();
+			for (BankAccount bankAccount : bankAccountsOfCompanyForm){
+				if(bankAccount.getAccountNumber() != null){
+					logger.info("Inside loop: account number is : " + bankAccount.getAccountNumber());
+					bankAccount.setCompany(companyService.findCompanyByUser(users));
+					bankAccountService.saveAndFlush(bankAccount);
+				}
+				
+			}
+		}
+		
+	
+		
+		
 
 		if (result.hasErrors()) {
 			return "/user-settings/edit-company";
@@ -252,6 +276,7 @@ public class UserEditCompanyController {
 
 		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
 		model.addAttribute("companyAddressessDB", addressService.findByCompanyNotDeletedAddresses(userCompany));
+		model.addAttribute("companyBankAccountsDb", bankAccountService.findByCompanyNotDeletedBankAccounts(userCompany));
 		model.addAttribute("user", userService.findUser(name));
 		return "company-details";
 	}

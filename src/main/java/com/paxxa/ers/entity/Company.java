@@ -40,8 +40,8 @@ public class Company {
 	@OneToMany(mappedBy = "company")
 	private List<Invoice> invoices;
 
-	@OneToOne
-	private BankAccount bankAccount;
+	@OneToMany(mappedBy = "company")
+	private List<BankAccount> bankAccount;
 
 	public Integer getId() {
 		return id;
@@ -107,11 +107,13 @@ public class Company {
 		this.invoices = invoices;
 	}
 
-	public BankAccount getBankAccount() {
+
+
+	public List<BankAccount> getBankAccount() {
 		return bankAccount;
 	}
 
-	public void setBankAccount(BankAccount bankAccount) {
+	public void setBankAccount(List<BankAccount> bankAccount) {
 		this.bankAccount = bankAccount;
 	}
 

@@ -54,7 +54,6 @@
 
 													<form:input path="companyName" ng-model="companyName"
 														cssClass="form-control" />
-
 												</div>
 											</div></td>
 									</tr>
@@ -65,7 +64,6 @@
 
 													<form:input path="nip" ng-model="nip"
 														cssClass="form-control" />
-
 												</div>
 											</div></td>
 									</tr>
@@ -75,7 +73,6 @@
 												<div class="col-sm-12">
 													<form:input path="phone" ng-model="phone"
 														cssClass="form-control" />
-
 												</div>
 											</div></td>
 									</tr>
@@ -85,13 +82,9 @@
 												<div class="col-sm-12">
 													<form:input path="email" ng-model="email"
 														cssClass="form-control" />
-
 												</div>
 											</div></td>
 									</tr>
-
-
-
 								</tbody>
 							</table>
 
@@ -99,6 +92,101 @@
 
 						</div>
 					</div>
+					
+						<!-- left Bank account -->
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">
+								<strong>Bank account</strong>
+							</h3>
+						</div>
+						<div class="panel-body">
+
+							
+							<!-- loop for bank accounts  -->
+							<c:set var="countAccount" value="-1" scope="page" />
+							<c:forEach items="${companyBankAccountsDb}" var="bankAccount">
+								<c:set var="countAccount" value="${countAccount+1}" scope="page" />
+							<!--  input field for entity ID-->
+							<form:input type="hidden" path="bankAccount[${countAccount}].id" value="${account.id}" />
+
+								<table class="table table-bordered ">
+									<thead>
+										<tr>
+											<th class="col-md-4">Fields</th>
+											<th>Edit</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+
+											<td><label for="bankAccount[${countAccount}].accountNumber"
+												class="col-sm-12 control-label">Bank account number:</label></td>
+											<td><div class="form-group">
+													<div class="col-sm-12">													
+														<form:input type="text" path="bankAccount[${countAccount}].accountNumber" 
+														 value="${bankAccount.accountNumber}"
+															 cssClass="form-control" />									
+													</div>
+												</div> 
+												</td>
+										</tr>
+
+									</tbody>
+								</table>
+
+							</c:forEach>
+							
+							
+							<!-- The template for adding new bank account -->
+
+							<table class="table table-bordered hide" id="bankAccountTemlate">
+								<thead>
+									<tr>
+										<th class="col-md-4">Fields</th>
+										<th>Edit</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr>
+										<td><label for="bankAccount[0].accountNumber"
+											class="col-sm-12 control-label">Street:</label></td>
+										<td><div class="form-group" id="addStreet">
+												<div class="col-sm-12">
+													<form:input path="bankAccount[0].accountNumber"
+														cssClass="form-control" disabled="true" />
+												</div>
+											</div></td>
+									</tr>
+
+									<tr>
+
+										<td colspan="2">
+											<div id="removeButtonDiv">
+												<button type="button" id="removeAddedAddress"
+													class="btn btn-warning removebutton">
+													Remove address <span class="glyphicon glyphicon-minus"></span>
+												</button>
+											</div>
+										</td>
+
+									</tr>
+									
+								</tbody>
+							</table>
+							<div >
+								<button type="button" id="AddMoreBankAccountId" class="btn btn-info">
+									Add bank account <span class="glyphicon glyphicon-plus"></span>
+								</button>
+							</div>
+
+
+
+						</div>
+					</div>
+	
+					
 				</div>
 				<div class="col-md-6">
 					<!-- Right address -->
@@ -133,10 +221,7 @@
 													<div class="col-sm-12">													
 														<form:input type="text" path="addresses[${count}].street" 
 														 value="${address.street}"
-															 cssClass="form-control" />		
-															 
-															 <c:out value="${address.id}"/>
-															 									
+															 cssClass="form-control" />									
 													</div>
 												</div> 
 												</td>
@@ -181,17 +266,14 @@
 										</tr>
 										<tr>										
 										<td colspan="2">
-										<!-- TESTY                -->
+										
 										<c:if test="${address.isDefaultInvoiceAddress eq 'true'}">
 										<input type="radio" name="defaultInvoiceAddress" value="${address.id}" checked="checked"> Set as default address on invoice<br><br>
 										</c:if>
 										<c:if test="${address.isDefaultInvoiceAddress eq 'false'}">
 										<input type="radio" name="defaultInvoiceAddress" value="${address.id}"> Set as default address on invoice<br><br>
 										</c:if>
-										<c:out value="${address.isDefaultInvoiceAddress}" />
-										
-										
-										
+											
 										<input type="hidden" name="addressesToDelete[]" value="${address.id}" disabled/>
 											<div id="removeButtonDiv">
 												<button type="button"
@@ -473,6 +555,43 @@
 			$(this).closest('table').hide();
 		     return false;
 		 });
+		
+		
+		
+		// BANK ACCOUNT
+		var MaxInputsBank = 2; // counting starts from 0 including 0
+		var OutputcounterBank = ${countAccount}; // (must start form -1) already displayed addresses from DB ->REQUIRE INTEGRATION   
+		var bankAccountIndex = ${countAccount}; // variable index for list index (must start form -1): deafault addreess[index] ->REQUIRE INTEGRATION   
+		
+		// condition for addAddress button located in general main table. 
+		if(OutputcounterBank >= MaxInputsBank) {
+	            $("#AddMoreAddressId").hide();
+	        }
+		
+		$("#AddMoreBankAccountId").click(function (e){
+			if(Outputcounter <= MaxInputs) {
+		bankAccountIndex++;
+		OutputcounterBank++;
+		var $template = $('#bankAccountTemlate'),
+        $cloneBankAccount = $template
+                         .clone()
+                         .removeClass('hide')
+                         .removeAttr('id')                         
+                         .insertBefore($template);
+		// find attribute "name" insrtead "path" - reason spring convertion -other way does not working
+		$cloneBankAccount
+        .find('[name="bankAccount[0].accountNumber"]').attr('name', 'bankAccount[' + bankAccountIndex + '].accountNumber').end()
+           
+    	$cloneBankAccount.find("input").prop('disabled', false)
+		
+		 $("#AddMoreAddressId").show();
+		 if(Outputcounter == MaxInputs) {
+            $("#AddMoreAddressId").hide();
+        }
+		
+			}
+			return false;
+		})
 		
 		
 		

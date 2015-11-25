@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -15,14 +16,17 @@ public class BankAccount {
 	@GeneratedValue
 	private Integer id;
 
-	private String account;
+	private String accountNumber;
 
 	private String description;
 
+	@ManyToOne
 	@OneToOne
 	private Company company;
 
-	private Boolean deafult;
+	private Boolean deafultBankAccountInvoice = false;
+	
+	private Boolean isDeleted = false;
 
 	@OneToMany(mappedBy = "bankAccount")
 	private List<Invoice> invoices;
@@ -35,12 +39,13 @@ public class BankAccount {
 		this.id = id;
 	}
 
-	public String getAccount() {
-		return account;
+
+	public String getAccountNumber() {
+		return accountNumber;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 	public String getDescription() {
@@ -67,13 +72,23 @@ public class BankAccount {
 		this.company = company;
 	}
 
-	public Boolean getDeafult() {
-		return deafult;
+	public Boolean getDeafultBankAccountInvoice() {
+		return deafultBankAccountInvoice;
 	}
 
-	public void setDeafult(Boolean deafult) {
-		this.deafult = deafult;
+	public void setDeafultBankAccountInvoice(Boolean deafultBankAccountInvoice) {
+		this.deafultBankAccountInvoice = deafultBankAccountInvoice;
 	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	
 	
 	
 
