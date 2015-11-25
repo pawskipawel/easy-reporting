@@ -181,7 +181,17 @@
 										</tr>
 										<tr>										
 										<td colspan="2">
-										<input type="radio" name="InvoiceAddres" value="male"> Set as default address on invoice<br><br>
+										<!-- TESTY                -->
+										<c:if test="${address.isDefaultInvoiceAddress eq 'true'}">
+										<input type="radio" name="defaultInvoiceAddress" value="${address.id}" checked="checked"> Set as default address on invoice<br><br>
+										</c:if>
+										<c:if test="${address.isDefaultInvoiceAddress eq 'false'}">
+										<input type="radio" name="defaultInvoiceAddress" value="${address.id}"> Set as default address on invoice<br><br>
+										</c:if>
+										<c:out value="${address.isDefaultInvoiceAddress}" />
+										
+										
+										
 										<input type="hidden" name="addressesToDelete[]" value="${address.id}" disabled/>
 											<div id="removeButtonDiv">
 												<button type="button"
@@ -198,7 +208,7 @@
 
 							</c:forEach>
 							
-							<!--  Default address form visible when there is no address in DB-->
+							<!--  Default one address form, visible when there is no address in DB-->
 							<c:if test="${count == -1}">
 							<table class="table table-bordered" >
 								<thead>
@@ -256,7 +266,12 @@
 											</div></td>
 									</tr>
 									<tr>
-									<td class="hide" ><input type="hidden" name="addressesToDelete" disabled/></td>
+									<td colspan="2">
+									</td>
+									<td class="hide" >
+									
+									<input type="hidden" name="addressesToDelete" disabled/>
+									</td>
 									
 									</tr>
 									
@@ -322,6 +337,7 @@
 												</div>
 											</div></td>
 									</tr>
+									
 									<tr>
 
 										<td colspan="2">
@@ -334,6 +350,7 @@
 										</td>
 
 									</tr>
+									
 								</tbody>
 							</table>
 							<div id="AddMoreAddressId">

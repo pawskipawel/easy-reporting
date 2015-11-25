@@ -2,6 +2,7 @@ package com.paxxa.ers.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -61,25 +62,33 @@ public class UserEditCompanyController {
 	@RequestMapping(value = "/user-settings/edit-company", method = RequestMethod.POST)
 	public String doEditCompany(@ModelAttribute("company") Company formCompany,
 			@RequestParam(value = "addressesToDelete[]", required = false) List<String> addressesToDeleteList,
-			Model model, Principal principal, BindingResult result, final RedirectAttributes redirectAttributes) {
+			@RequestParam(value = "defaultInvoiceAddress", required = false) String addressIdAsDefault, Model model,
+			Principal principal, BindingResult result, final RedirectAttributes redirectAttributes) {
 		String name = principal.getName();
 		User currentUser = userService.findUser(name);
+		List<User> users = new ArrayList<User>();
+		users.add(currentUser);
 
 		logger.info("edit company - post");
 
 		/*
-		 * List of addresses ID to delete / remove
+		 * Block responsible for setting status "default address for invoice"
+		 */
+		logger.info("default status for ID " + addressIdAsDefault);
+
+		/*
+		 * List of addresses ID's to delete / remove
 		 */
 		if (addressesToDeleteList != null) {
-			for (String address : addressesToDeleteList) {
-				if (address != null && address != "") {
-					logger.info("@RequestParam " + address);
+			for (String id : addressesToDeleteList) {
+				if (id != null && id != "") {
+					logger.info("@RequestParam " + id);
+					Address existingAddressToDelete = addressService.findById(Integer.parseInt(id));
+					existingAddressToDelete.setIsDeleted(true);
+					addressService.saveOrUpdate(existingAddressToDelete);
 				}
 			}
 		}
-
-		List<User> users = new ArrayList<User>();
-		users.add(currentUser);
 
 		/*
 		 * Part responsible for saving and updating base Company entity
@@ -150,19 +159,19 @@ public class UserEditCompanyController {
 						if (!existingCompanyAddress.getStreet().equals(addressFromForm.getStreet())
 								|| !existingCompanyAddress.getStreetNumber().equals(addressFromForm.getStreetNumber())
 								|| !existingCompanyAddress.getZipcode().equals(addressFromForm.getZipcode())
-								|| !existingCompanyAddress.getCity().equals(addressFromForm.getCity())) {
+								|| !existingCompanyAddress.getCity().equals(addressFromForm.getCity())
+
+						) {
 							existingCompanyAddress.setIsDeleted(true);
-							Address addressRevision = new Address();
-							addressRevision.setCompany(companyService.findCompanyByUser(users));
-							addressRevision.setStreet(addressFromForm.getStreet());
-							addressRevision.setStreetNumber(addressFromForm.getStreetNumber());
-							addressRevision.setZipcode(addressFromForm.getZipcode());
-							addressRevision.setCity(addressFromForm.getCity());
-							addressService.saveOrUpdate(addressRevision);
+							Address addressAfterRevision = new Address();
+							addressAfterRevision.setCompany(companyService.findCompanyByUser(users));
+							addressAfterRevision.setStreet(addressFromForm.getStreet());
+							addressAfterRevision.setStreetNumber(addressFromForm.getStreetNumber());
+							addressAfterRevision.setZipcode(addressFromForm.getZipcode());
+							addressAfterRevision.setCity(addressFromForm.getCity());
+							addressService.saveOrUpdate(addressAfterRevision);
 						}
-
 						addressService.saveOrUpdate(existingCompanyAddress);
-
 					}
 				}
 			}
@@ -180,11 +189,43 @@ public class UserEditCompanyController {
 			List<Address> addressesOfCompanyForm = formCompany.getAddresses();
 			for (Address address : addressesOfCompanyForm) {
 				if (address.getCity() != null && address.getStreet() != null) {
+					address.setRevisionDate(new Date());
+					address.setRevisionNumber(0);
 					address.setCompany(companyService.findCompanyByUser(users));
 					addressService.saveAndFlush(address);
 				}
 			}
 
+		}
+
+		/*
+		 * Bloc responsible for setting IsDefaultInvoiceAddress status
+		 */
+		if (addressIdAsDefault != null) {
+			Address currentDbAddressAsDefaultInvoice = addressService
+					.findCurrentAddressAsDefaultInvoice(companyService.findCompanyByUser(users));
+			Address newDbAddessAsDefaultInvoice = addressService.findById(Integer.parseInt(addressIdAsDefault));
+			if (currentDbAddressAsDefaultInvoice != null) {
+				logger.info("Setting IsDefaultInvoiceAddress status:  currentDbAddress ID: "
+						+ currentDbAddressAsDefaultInvoice.getId());
+			}
+			logger.info(
+					"Setting IsDefaultInvoiceAddress status:  new Address ID: " + newDbAddessAsDefaultInvoice.getId());
+			if (currentDbAddressAsDefaultInvoice != null
+					&& Integer.parseInt(addressIdAsDefault) != currentDbAddressAsDefaultInvoice.getId()) {
+				currentDbAddressAsDefaultInvoice.setIsDefaultInvoiceAddress(false);
+				newDbAddessAsDefaultInvoice.setIsDefaultInvoiceAddress(true);
+				addressService.saveAndFlush(currentDbAddressAsDefaultInvoice);
+				addressService.saveAndFlush(newDbAddessAsDefaultInvoice);
+			}
+			if (currentDbAddressAsDefaultInvoice != null
+					&& Integer.parseInt(addressIdAsDefault) == currentDbAddressAsDefaultInvoice.getId()) {
+				// do nothing
+			} else {
+				newDbAddessAsDefaultInvoice.setIsDefaultInvoiceAddress(true);
+				addressService.saveAndFlush(newDbAddessAsDefaultInvoice);
+
+			}
 		}
 
 		if (result.hasErrors()) {

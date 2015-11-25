@@ -16,5 +16,7 @@ public interface AddressRepository extends JpaRepository<Address, Integer>{
 	List<Address> findByCompanyAndIsDeletedIsFalse(Company company);
 
 	Address findById(Integer id);
+	
+	Address findByCompanyAndIsDefaultInvoiceAddressIsTrue(Company company);
 
 }

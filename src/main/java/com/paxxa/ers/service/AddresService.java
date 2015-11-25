@@ -47,4 +47,8 @@ public class AddresService {
 	public Address findById(Integer id) {
 		return addressRepository.findById(id);
 	}
+
+	public Address findCurrentAddressAsDefaultInvoice(Company company) {
+		return addressRepository.findByCompanyAndIsDefaultInvoiceAddressIsTrue(company);
+	}
 }

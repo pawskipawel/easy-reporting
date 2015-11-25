@@ -20,6 +20,8 @@ public class Address {
 	
 	private Boolean isDeleted = false;
 	
+	private Boolean isDefaultInvoiceAddress = false;
+	
 	private Integer revisionNumber;
 	
 	private Date revisionDate;
@@ -109,6 +111,13 @@ public class Address {
 		this.company = company;
 	}
 
-	
+	public Boolean getIsDefaultInvoiceAddress() {
+		return isDefaultInvoiceAddress;
+	}
 
+	public void setIsDefaultInvoiceAddress(Boolean isDefaultInvoiceAddress) {
+		this.isDefaultInvoiceAddress = isDefaultInvoiceAddress;
+	}
+
+	
 }

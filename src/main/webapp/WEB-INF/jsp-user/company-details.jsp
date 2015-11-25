@@ -99,6 +99,13 @@
 										<td><label class="col-sm-12 control-label">City:</label></td>
 										<td><c:out value="${address.city}" /></td>
 									</tr>
+									<tr>
+									<td colspan="2">
+									<c:if test="${address.isDefaultInvoiceAddress eq 'true'}">
+									Default address for invoice
+									</c:if>
+									</td>
+									</tr>
 								</tbody>
 							</table>
 						</c:forEach>
