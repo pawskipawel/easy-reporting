@@ -31,5 +31,13 @@ public class BankAccountService {
 		return bankAccountRepository.findByCompanyAndIsDeletedIsFalse(comapny);
 	}
 
+	public void saveOrUpdate(BankAccount bankAccount) {
+		bankAccountRepository.save(bankAccount);
+	}
+
+	public BankAccount findById(Integer id) {
+		return bankAccountRepository.findById(id);
+	}
+
 
 }

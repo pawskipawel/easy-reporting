@@ -108,7 +108,7 @@
 							<c:forEach items="${companyBankAccountsDb}" var="bankAccount">
 								<c:set var="countAccount" value="${countAccount+1}" scope="page" />
 							<!--  input field for entity ID-->
-							<form:input type="hidden" path="bankAccount[${countAccount}].id" value="${account.id}" />
+							<form:input type="hidden" path="bankAccount[${countAccount}].id" value="${bankAccount.id}" />
 
 								<table class="table table-bordered ">
 									<thead>

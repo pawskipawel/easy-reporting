@@ -77,11 +77,6 @@ public class UserEditCompanyController {
 		logger.info("edit company - post");
 
 		/*
-		 * Block responsible for setting status "default address for invoice"
-		 */
-		logger.info("default status for ID " + addressIdAsDefault);
-
-		/*
 		 * List of addresses ID's to delete / remove
 		 */
 		if (addressesToDeleteList != null) {
@@ -233,7 +228,60 @@ public class UserEditCompanyController {
 			}
 		}
 		
-		// Bank account 
+		// Bank account  
+		//TODO: Refactor code below
+		if(!bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users)).isEmpty()){
+			logger.info("Bank account list exists in DB");
+			List<BankAccount> existingListOfBankAccounts = bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users));
+			List<BankAccount> listOfBankAccountsFromForm = formCompany.getBankAccount();
+			
+			logger.info("Bank Accounts List from DB" + existingListOfBankAccounts + "size: " + existingListOfBankAccounts.size());
+			logger.info("Bank Accounts List from FORM" + listOfBankAccountsFromForm + "size: " + listOfBankAccountsFromForm.size());
+			for(BankAccount bankAccountFromForm : listOfBankAccountsFromForm){
+				/*
+				 * block for saving dynamically added Bank Account (whoch do not
+				 * contain ID) and prevention of saving into DB an empty
+				 * entities created after dynamically removing not-last object
+				 * form list (reason is not updated incrementation)
+				 */	
+				if (bankAccountFromForm.getId() == null && bankAccountFromForm.getAccountNumber() != null	) {
+					logger.info("bank account with id == null");
+					bankAccountFromForm.setCompany(companyService.findCompanyByUser(users));
+					bankAccountService.saveOrUpdate(bankAccountFromForm);
+				}
+				
+				for(BankAccount esistingBankAccountFromList :existingListOfBankAccounts ){
+					logger.info("Bank Account searching in loop 2: " + esistingBankAccountFromList.getId());
+					logger.info("Bank Account searching in loop 2 for entity id from loop1: " + bankAccountFromForm.getId());
+					
+				if(bankAccountFromForm.getId() == (esistingBankAccountFromList.getId())){
+					BankAccount existingBankAccountDb = bankAccountService.findById(bankAccountFromForm.getId());
+					logger.info("ID of bank account from FORM exists in DB");
+					/*
+					 * Saving bank account passed by form with new ID, only when
+					 * there was modification. For the bank account from Db which
+					 * was base for the modification, set isDeleted with
+					 * true.
+					 */
+					if(!existingBankAccountDb.getAccountNumber().equals(bankAccountFromForm.getAccountNumber())
+							|| !existingBankAccountDb.getDescription().equals(bankAccountFromForm.getDescription())){
+						existingBankAccountDb.setIsDeleted(true);
+						BankAccount bankAccountAfterRevision = new BankAccount();
+						bankAccountAfterRevision.setCompany(companyService.findCompanyByUser(users));
+						bankAccountAfterRevision.setAccountNumber(bankAccountFromForm.getAccountNumber());
+						bankAccountAfterRevision.setDescription(bankAccountFromForm.getDescription());
+						bankAccountService.saveOrUpdate(bankAccountAfterRevision);
+						
+					}
+				}	
+				}	
+		}		
+		}
+		
+		
+		/*
+		 * Bloc responsible fore saving binded data for bank account when there is no bank account for company in Db.
+		 */
 		
 		if(bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users)).isEmpty()){
 			logger.info("Bank account list does not exists - save all list from form");
