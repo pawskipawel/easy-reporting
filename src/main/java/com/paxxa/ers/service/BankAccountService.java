@@ -39,5 +39,9 @@ public class BankAccountService {
 		return bankAccountRepository.findById(id);
 	}
 
+	public BankAccount findCurrentBankAccountAsDefaultInvoice(Company company) {
+		return bankAccountRepository.findByIsDeafultBankAccountInvoiceIsTrue(company);
+	}
+
 
 }

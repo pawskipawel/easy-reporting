@@ -139,7 +139,7 @@ public class InitDbService {
 		bankAccount1CompanyX.setAccountNumber("101010101010101010101010");
 		bankAccount1CompanyX.setDescription("mbank");
 		bankAccount1CompanyX.setCompany(companyZ);
-		bankAccount1CompanyX.setDeafultBankAccountInvoice(true);
+		bankAccount1CompanyX.setIsDeafultBankAccountInvoice(true);
 		bankAccountRepository.save(bankAccount1CompanyX);
 		
 		PaymentType paymentTypeCash = new PaymentType();

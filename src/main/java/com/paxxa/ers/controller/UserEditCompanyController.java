@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -58,7 +59,8 @@ public class UserEditCompanyController {
 
 		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
 		model.addAttribute("companyAddressessDB", addressService.findByCompanyNotDeletedAddresses(userCompany));
-		model.addAttribute("companyBankAccountsDb", bankAccountService.findByCompanyNotDeletedBankAccounts(userCompany));
+		model.addAttribute("companyBankAccountsDb",
+				bankAccountService.findByCompanyNotDeletedBankAccounts(userCompany));
 		model.addAttribute("user", userService.findUser(name));
 		return "edit-company";
 	}
@@ -67,8 +69,10 @@ public class UserEditCompanyController {
 	@RequestMapping(value = "/user-settings/edit-company", method = RequestMethod.POST)
 	public String doEditCompany(@ModelAttribute("company") Company formCompany,
 			@RequestParam(value = "addressesToDelete[]", required = false) List<String> addressesToDeleteList,
-			@RequestParam(value = "defaultInvoiceAddress", required = false) String addressIdAsDefault, Model model,
-			Principal principal, BindingResult result, final RedirectAttributes redirectAttributes) {
+			@RequestParam(value = "defaultInvoiceAddress", required = false) String addressIdAsDefaultInvoice,
+			@RequestParam(value = "bankAccountToDelete[]", required = false) List<String> bankAccountToDeleteList,
+			@RequestParam(value = "defaultInvoiceBankAccount", required = false) String bankAccountIdAsDefaultInvoice,
+			Model model, Principal principal, BindingResult result, final RedirectAttributes redirectAttributes) {
 		String name = principal.getName();
 		User currentUser = userService.findUser(name);
 		List<User> users = new ArrayList<User>();
@@ -201,104 +205,150 @@ public class UserEditCompanyController {
 		/*
 		 * Bloc responsible for setting IsDefaultInvoiceAddress status
 		 */
-		if (addressIdAsDefault != null) {
+		if (addressIdAsDefaultInvoice != null) {
+			Address newDbAddessAsDefaultInvoice = addressService.findById(Integer.parseInt(addressIdAsDefaultInvoice));
 			Address currentDbAddressAsDefaultInvoice = addressService
 					.findCurrentAddressAsDefaultInvoice(companyService.findCompanyByUser(users));
-			Address newDbAddessAsDefaultInvoice = addressService.findById(Integer.parseInt(addressIdAsDefault));
-			if (currentDbAddressAsDefaultInvoice != null) {
-				logger.info("Setting IsDefaultInvoiceAddress status:  currentDbAddress ID: "
-						+ currentDbAddressAsDefaultInvoice.getId());
-			}
+			
 			logger.info(
 					"Setting IsDefaultInvoiceAddress status:  new Address ID: " + newDbAddessAsDefaultInvoice.getId());
 			if (currentDbAddressAsDefaultInvoice != null
-					&& Integer.parseInt(addressIdAsDefault) != currentDbAddressAsDefaultInvoice.getId()) {
+					&& Integer.parseInt(addressIdAsDefaultInvoice) != currentDbAddressAsDefaultInvoice.getId()) {
 				currentDbAddressAsDefaultInvoice.setIsDefaultInvoiceAddress(false);
 				newDbAddessAsDefaultInvoice.setIsDefaultInvoiceAddress(true);
 				addressService.saveAndFlush(currentDbAddressAsDefaultInvoice);
 				addressService.saveAndFlush(newDbAddessAsDefaultInvoice);
 			}
 			if (currentDbAddressAsDefaultInvoice != null
-					&& Integer.parseInt(addressIdAsDefault) == currentDbAddressAsDefaultInvoice.getId()) {
+					&& Integer.parseInt(addressIdAsDefaultInvoice) == currentDbAddressAsDefaultInvoice.getId()) {
 				// do nothing
 			} else {
+				logger.info("No default address in DB");
 				newDbAddessAsDefaultInvoice.setIsDefaultInvoiceAddress(true);
 				addressService.saveAndFlush(newDbAddessAsDefaultInvoice);
 
 			}
 		}
-		
-		// Bank account  
-		//TODO: Refactor code below
-		if(!bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users)).isEmpty()){
+
+		// Bank account
+
+		/*
+		 * List of bank accounts ID's to delete / remove
+		 */
+		if (bankAccountToDeleteList != null) {
+			for (String id : bankAccountToDeleteList) {
+				if (id != null && id != "") {
+					logger.info("Bank Account ID's to delete passed by @RequestParam " + id);
+					BankAccount existingBankAccountToDelete = bankAccountService.findById(Integer.parseInt(id));
+					existingBankAccountToDelete.setIsDeleted(true);
+					bankAccountService.saveOrUpdate(existingBankAccountToDelete);
+				}
+			}
+		}
+
+		// TODO: Refactor code below
+		if (!bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
 			logger.info("Bank account list exists in DB");
-			List<BankAccount> existingListOfBankAccounts = bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users));
+			List<BankAccount> existingListOfBankAccounts = bankAccountService
+					.findBankAccountsByCompany(companyService.findCompanyByUser(users));
 			List<BankAccount> listOfBankAccountsFromForm = formCompany.getBankAccount();
-			
-			logger.info("Bank Accounts List from DB" + existingListOfBankAccounts + "size: " + existingListOfBankAccounts.size());
-			logger.info("Bank Accounts List from FORM" + listOfBankAccountsFromForm + "size: " + listOfBankAccountsFromForm.size());
-			for(BankAccount bankAccountFromForm : listOfBankAccountsFromForm){
+
+			/*logger.info("Bank Accounts List from DB" + existingListOfBankAccounts + "size: "
+					+ existingListOfBankAccounts.size());
+			logger.info("Bank Accounts List from FORM" + listOfBankAccountsFromForm + "size: "
+					+ listOfBankAccountsFromForm.size());*/
+			for (BankAccount bankAccountFromForm : listOfBankAccountsFromForm) {
 				/*
 				 * block for saving dynamically added Bank Account (whoch do not
 				 * contain ID) and prevention of saving into DB an empty
 				 * entities created after dynamically removing not-last object
 				 * form list (reason is not updated incrementation)
-				 */	
-				if (bankAccountFromForm.getId() == null && bankAccountFromForm.getAccountNumber() != null	) {
+				 */
+				if (bankAccountFromForm.getId() == null && bankAccountFromForm.getAccountNumber() != null) {
 					logger.info("bank account with id == null");
 					bankAccountFromForm.setCompany(companyService.findCompanyByUser(users));
 					bankAccountService.saveOrUpdate(bankAccountFromForm);
 				}
-				
-				for(BankAccount esistingBankAccountFromList :existingListOfBankAccounts ){
+
+				for (BankAccount esistingBankAccountFromList : existingListOfBankAccounts) {
 					logger.info("Bank Account searching in loop 2: " + esistingBankAccountFromList.getId());
-					logger.info("Bank Account searching in loop 2 for entity id from loop1: " + bankAccountFromForm.getId());
-					
-				if(bankAccountFromForm.getId() == (esistingBankAccountFromList.getId())){
-					BankAccount existingBankAccountDb = bankAccountService.findById(bankAccountFromForm.getId());
-					logger.info("ID of bank account from FORM exists in DB");
-					/*
-					 * Saving bank account passed by form with new ID, only when
-					 * there was modification. For the bank account from Db which
-					 * was base for the modification, set isDeleted with
-					 * true.
-					 */
-					if(!existingBankAccountDb.getAccountNumber().equals(bankAccountFromForm.getAccountNumber())
-							|| !existingBankAccountDb.getDescription().equals(bankAccountFromForm.getDescription())){
-						existingBankAccountDb.setIsDeleted(true);
-						BankAccount bankAccountAfterRevision = new BankAccount();
-						bankAccountAfterRevision.setCompany(companyService.findCompanyByUser(users));
-						bankAccountAfterRevision.setAccountNumber(bankAccountFromForm.getAccountNumber());
-						bankAccountAfterRevision.setDescription(bankAccountFromForm.getDescription());
-						bankAccountService.saveOrUpdate(bankAccountAfterRevision);
-						
+					logger.info("Bank Account searching in loop 2 for entity id from loop1: "
+							+ bankAccountFromForm.getId());
+
+					if (bankAccountFromForm.getId() == (esistingBankAccountFromList.getId())) {
+						BankAccount existingBankAccountDb = bankAccountService.findById(bankAccountFromForm.getId());
+						logger.info("ID of bank account from FORM exists in DB");
+						/*
+						 * Saving bank account passed by form with new ID, only
+						 * when there was modification. For the bank account
+						 * from Db which was base for the modification, set
+						 * isDeleted with true.
+						 */
+						if (!existingBankAccountDb.getAccountNumber().equals(bankAccountFromForm.getAccountNumber())
+								|| !existingBankAccountDb.getDescription()
+										.equals(bankAccountFromForm.getDescription())) {
+							existingBankAccountDb.setIsDeleted(true);
+							BankAccount bankAccountAfterRevision = new BankAccount();
+							bankAccountAfterRevision.setCompany(companyService.findCompanyByUser(users));
+							bankAccountAfterRevision.setAccountNumber(bankAccountFromForm.getAccountNumber());
+							bankAccountAfterRevision.setDescription(bankAccountFromForm.getDescription());
+							bankAccountService.saveOrUpdate(bankAccountAfterRevision);
+
+						}
 					}
-				}	
-				}	
-		}		
+				}
+			}
 		}
-		
-		
+
 		/*
-		 * Bloc responsible fore saving binded data for bank account when there is no bank account for company in Db.
+		 * Bloc responsible fore saving binded data for bank account when there
+		 * is no bank account for company in Db.
 		 */
-		
-		if(bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users)).isEmpty()){
+
+		if (bankAccountService.findBankAccountsByCompany(companyService.findCompanyByUser(users)).isEmpty()) {
 			logger.info("Bank account list does not exists - save all list from form");
 			List<BankAccount> bankAccountsOfCompanyForm = formCompany.getBankAccount();
-			for (BankAccount bankAccount : bankAccountsOfCompanyForm){
-				if(bankAccount.getAccountNumber() != null){
+			if(bankAccountsOfCompanyForm != null){
+			for (BankAccount bankAccount : bankAccountsOfCompanyForm) {
+				if (bankAccount.getAccountNumber() != null) {
 					logger.info("Inside loop: account number is : " + bankAccount.getAccountNumber());
 					bankAccount.setCompany(companyService.findCompanyByUser(users));
 					bankAccountService.saveAndFlush(bankAccount);
 				}
-				
+
+			}
 			}
 		}
-		
-	
-		
-		
+
+		/*
+		 * Bloc responsible for setting IsDefaultInvoiceBankAccount status
+		 */
+		if (bankAccountIdAsDefaultInvoice != null) {
+			
+			BankAccount newDbBankAccountAsDefaultInvoiceByFormIDRadio = bankAccountService.findById(Integer.parseInt(bankAccountIdAsDefaultInvoice));
+			
+			try{
+			BankAccount currentDbBankAccountAsDefaultInvoice = bankAccountService
+					.findCurrentBankAccountAsDefaultInvoice(companyService.findCompanyByUser(users));
+			
+			if (currentDbBankAccountAsDefaultInvoice != null
+					&& Integer.parseInt(bankAccountIdAsDefaultInvoice) != currentDbBankAccountAsDefaultInvoice.getId()) {
+				currentDbBankAccountAsDefaultInvoice.setIsDeafultBankAccountInvoice(false);
+				newDbBankAccountAsDefaultInvoiceByFormIDRadio.setIsDeafultBankAccountInvoice(true);
+				bankAccountService.saveAndFlush(currentDbBankAccountAsDefaultInvoice);
+				bankAccountService.saveAndFlush(newDbBankAccountAsDefaultInvoiceByFormIDRadio);
+			}
+			if (currentDbBankAccountAsDefaultInvoice != null
+					&& Integer.parseInt(addressIdAsDefaultInvoice) == currentDbBankAccountAsDefaultInvoice.getId()) {
+				// do nothing, no change required
+			}
+			}catch (NoSuchElementException noSuchElementEcxeption) {
+				logger.info("No bank account with default equals true for defaultInvoice attributte");
+				newDbBankAccountAsDefaultInvoiceByFormIDRadio.setIsDeafultBankAccountInvoice(true);
+				bankAccountService.saveAndFlush(newDbBankAccountAsDefaultInvoiceByFormIDRadio);
+
+			}
+		}
 
 		if (result.hasErrors()) {
 			return "/user-settings/edit-company";
@@ -324,7 +374,8 @@ public class UserEditCompanyController {
 
 		model.addAttribute("companyDB", companyService.findCompanyByUser(users));
 		model.addAttribute("companyAddressessDB", addressService.findByCompanyNotDeletedAddresses(userCompany));
-		model.addAttribute("companyBankAccountsDb", bankAccountService.findByCompanyNotDeletedBankAccounts(userCompany));
+		model.addAttribute("companyBankAccountsDb",
+				bankAccountService.findByCompanyNotDeletedBankAccounts(userCompany));
 		model.addAttribute("user", userService.findUser(name));
 		return "company-details";
 	}

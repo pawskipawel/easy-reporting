@@ -26,7 +26,7 @@
 						<table class="table table-bordered ">
 							<thead>
 								<tr>
-									<th class="col-md-4" >Fields</th>
+									<th class="col-md-4">Fields</th>
 									<th>Edit</th>
 								</tr>
 							</thead>
@@ -50,11 +50,49 @@
 								</tr>
 							</tbody>
 						</table>
-						
-						
+
+
 
 					</div>
 				</div>
+
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<strong>Bank Account</strong>
+						</h3>
+					</div>
+					<div class="panel-body">
+					
+					<!-- loop for bank accounts  -->
+							<c:forEach items="${companyBankAccountsDb}" var="bankAccount">
+								<table class="table table-bordered ">
+									<thead>
+										<tr>
+											<th class="col-md-4">Fields</th>
+											<th>Edit</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><label class="col-sm-12 control-label">Bank Account number: </label></td>
+											<td><c:out  value="${bankAccount.accountNumber}"></c:out></td>
+										</tr>
+										<tr>
+											<td><label class="col-sm-12 control-label">Bank Description: </label></td>
+											<td><c:out  value="${bankAccount.description}"></c:out></td>
+										</tr>
+
+									</tbody>
+								</table>
+
+							</c:forEach>
+					
+					
+					
+					</div>
+				</div>
+
 			</div>
 			<div class="col-md-6">
 				<!-- Right address -->
@@ -67,13 +105,14 @@
 					<div class="panel-body">
 
 
-						<c:set var="count" value="-1"/> 	
-						<c:forEach items="${companyAddressessDB}" var="address" varStatus="status">
-						<c:set var="count" value="count+1"/> 
+						<c:set var="count" value="-1" />
+						<c:forEach items="${companyAddressessDB}" var="address"
+							varStatus="status">
+							<c:set var="count" value="count+1" />
 							<table class="table table-bordered ">
 								<thead>
 									<tr>
-										<th class="col-md-4" >Fields</th>
+										<th class="col-md-4">Fields</th>
 										<th>Edit</th>
 									</tr>
 								</thead>
@@ -81,9 +120,8 @@
 									<tr>
 
 										<td><label class="col-sm-12 control-label">Street:</label></td>
-										<td><c:out value="${address.street}" />
-										<c:out value="${address.isDeleted}"/>
-										<c:out value="${address.id}"/>
+										<td><c:out value="${address.street}" /> <c:out
+												value="${address.isDeleted}" /> <c:out value="${address.id}" />
 										</td>
 									</tr>
 									<tr>
@@ -99,30 +137,32 @@
 										<td><label class="col-sm-12 control-label">City:</label></td>
 										<td><c:out value="${address.city}" /></td>
 									</tr>
-									
+
 									<c:if test="${address.isDefaultInvoiceAddress eq 'true'}">
-									<tr>
-									<td colspan="2" class="bg-warning">
-									Default address for invoice
-									</td>
-									</tr>
+										<tr>
+											<td colspan="2" class="bg-warning">Default address for
+												invoice</td>
+										</tr>
 									</c:if>
-									
+
 								</tbody>
 							</table>
 						</c:forEach>
-						
+
 						<c:if test="${count == -1}">
-						<a
-						href="<spring:url value="/user-settings/edit-company.html"></spring:url>"
-						type="button" class="btn btn-info">Add address <span
-						class="glyphicon glyphicon-pencil"></span>
-					</a>
+							<a
+								href="<spring:url value="/user-settings/edit-company.html"></spring:url>"
+								type="button" class="btn btn-info">Add address <span
+								class="glyphicon glyphicon-pencil"></span>
+							</a>
 						</c:if>
 
 					</div>
 				</div>
 			</div>
+
+
+
 
 
 		</div>

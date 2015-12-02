@@ -24,7 +24,7 @@ public class BankAccount {
 	@OneToOne
 	private Company company;
 
-	private Boolean deafultBankAccountInvoice = false;
+	private Boolean isDeafultBankAccountInvoice = false;
 	
 	private Boolean isDeleted = false;
 
@@ -72,12 +72,13 @@ public class BankAccount {
 		this.company = company;
 	}
 
-	public Boolean getDeafultBankAccountInvoice() {
-		return deafultBankAccountInvoice;
+
+	public Boolean getIsDeafultBankAccountInvoice() {
+		return isDeafultBankAccountInvoice;
 	}
 
-	public void setDeafultBankAccountInvoice(Boolean deafultBankAccountInvoice) {
-		this.deafultBankAccountInvoice = deafultBankAccountInvoice;
+	public void setIsDeafultBankAccountInvoice(Boolean isDeafultBankAccountInvoice) {
+		this.isDeafultBankAccountInvoice = isDeafultBankAccountInvoice;
 	}
 
 	public Boolean getIsDeleted() {

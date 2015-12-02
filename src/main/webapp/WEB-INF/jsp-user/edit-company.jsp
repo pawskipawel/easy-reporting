@@ -131,6 +131,44 @@
 												</div> 
 												</td>
 										</tr>
+										
+										<tr>
+
+											<td><label for="bankAccount[${countAccount}].description"
+												class="col-sm-12 control-label">Bank account number:</label></td>
+											<td><div class="form-group">
+													<div class="col-sm-12">													
+														<form:input type="text" path="bankAccount[${countAccount}].description" 
+														 value="${bankAccount.description}"
+															 cssClass="form-control" />									
+													</div>
+												</div> 
+												</td>
+										</tr>
+										
+										<tr>										
+										<td colspan="2">
+										
+										<c:if test="${bankAccount.isDeafultBankAccountInvoice eq 'true'}">
+										<input type="radio" name="defaultInvoiceBankAccount" value="${bankAccount.id}" checked="checked"> Set as default bank account on invoice<br><br>
+										</c:if>
+										<c:if test="${bankAccount.isDeafultBankAccountInvoice eq 'false'}">
+										<input type="radio" name="defaultInvoiceBankAccount" value="${bankAccount.id}"> Set as default bank account on invoice<br><br>
+										</c:if> 
+											
+										<input type="hidden" name="bankAccountToDelete[]" value="${bankAccount.id}" disabled/>
+											<div id="removeBankAccountButtonDiv">
+												<button type="button"
+													class="btn btn-warning removeBakAccountFromDB">
+													Remove bank account <span class="glyphicon glyphicon-minus"></span>
+												</button>
+											</div>
+											
+											
+										</td>
+									</tr>
+										
+										
 
 									</tbody>
 								</table>
@@ -159,13 +197,24 @@
 												</div>
 											</div></td>
 									</tr>
+									
+									<tr>
+										<td><label for="bankAccount[0].description"
+											class="col-sm-12 control-label">Description:</label></td>
+										<td><div class="form-group">
+												<div class="col-sm-12">
+													<form:input path="bankAccount[0].description"
+														cssClass="form-control" disabled="true" />
+												</div>
+											</div></td>
+									</tr>
 
 									<tr>
 
 										<td colspan="2">
-											<div id="removeButtonDiv">
-												<button type="button" id="removeAddedAddress"
-													class="btn btn-warning removebutton">
+											<div id="removeButtonDivBankAccount">
+												<button type="button" id="removeAddedBankAccount"
+													class="btn btn-warning removeButtonBankAccount">
 													Remove address <span class="glyphicon glyphicon-minus"></span>
 												</button>
 											</div>
@@ -565,7 +614,7 @@
 		
 		// condition for addAddress button located in general main table. 
 		if(OutputcounterBank >= MaxInputsBank) {
-	            $("#AddMoreAddressId").hide();
+	            $("#AddMoreBankAccountId").hide();
 	        }
 		
 		$("#AddMoreBankAccountId").click(function (e){
@@ -581,17 +630,37 @@
 		// find attribute "name" insrtead "path" - reason spring convertion -other way does not working
 		$cloneBankAccount
         .find('[name="bankAccount[0].accountNumber"]').attr('name', 'bankAccount[' + bankAccountIndex + '].accountNumber').end()
+        .find('[name="bankAccount[0].description"]').attr('name', 'bankAccount[' + bankAccountIndex + '].description').end()
            
     	$cloneBankAccount.find("input").prop('disabled', false)
 		
-		 $("#AddMoreAddressId").show();
-		 if(Outputcounter == MaxInputs) {
-            $("#AddMoreAddressId").hide();
+		 $("#AddMoreBankAccountId").show();
+		 if(OutputcounterBank == MaxInputs) {
+            $("#AddMoreBankAccountId").hide();
         }
 		
 			}
 			return false;
 		})
+		
+		// You need to use event delegation (and class selector) because those buttons don't exist on load, but are created in table 
+		$(document).on('click', 'button.removeButtonBankAccount', function () {
+			$(this).closest('table').remove();
+			bankAccountIndex--;
+			OutputcounterBank--;
+			if(OutputcounterBank < MaxInputsBank) {
+	            $("#AddMoreBankAccountId").show();
+	        }
+		     return false;
+		 });
+		
+		$(document).on('click', 'button.removeBakAccountFromDB', function () {
+			$(this).closest('table').find("input").prop('disabled', false)
+			$(this).closest('table').hide();
+		     return false;
+		 });
+		
+		
 		
 		
 		
