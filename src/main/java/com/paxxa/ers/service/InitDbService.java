@@ -91,7 +91,7 @@ public class InitDbService {
 		companyX.setCompanyName("testCompany");
 		companyX.setEmail("companyX@gmail.com");
 		companyX.setPhone(792600330L);
-		companyX.setNip(5641713529L);
+		companyX.setNip("5641713529");
 		companyX.setRegistrationDate(new Date());
 		companyRepository.save(companyX);
 		
@@ -111,7 +111,7 @@ public class InitDbService {
 		Company companyZ = new Company();
 		companyZ.setCompanyName("CompanyZ");
 		companyZ.setPhone(985987468L);
-		companyZ.setNip(5846985782L);
+		companyZ.setNip("5846985782");
 		companyZ.setRegistrationDate(new Date());
 		List<User> companyZusers = new ArrayList<User>();
 		companyZusers.add(ann);

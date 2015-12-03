@@ -22,7 +22,7 @@ public class Company {
 	@Column(name = "company_name")
 	private String companyName;
 
-	private Long nip;
+	private String nip;
 
 	private Long phone;
 
@@ -59,11 +59,13 @@ public class Company {
 		this.companyName = companyName;
 	}
 
-	public Long getNip() {
+	
+
+	public String getNip() {
 		return nip;
 	}
 
-	public void setNip(Long nip) {
+	public void setNip(String nip) {
 		this.nip = nip;
 	}
 
