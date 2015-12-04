@@ -111,7 +111,7 @@ public class InitDbService {
 		Company companyZ = new Company();
 		companyZ.setCompanyName("CompanyZ");
 		companyZ.setPhone(985987468L);
-		companyZ.setNip("5846985782");
+		companyZ.setNip("5641713529");
 		companyZ.setRegistrationDate(new Date());
 		List<User> companyZusers = new ArrayList<User>();
 		companyZusers.add(ann);
@@ -136,7 +136,7 @@ public class InitDbService {
 		addressRepository.save(addressCompanyX);
 		
 		BankAccount bankAccount1CompanyX = new BankAccount();
-		bankAccount1CompanyX.setAccountNumber("101010101010101010101010");
+		bankAccount1CompanyX.setAccountNumber("86114020040000320275105364");
 		bankAccount1CompanyX.setDescription("mbank");
 		bankAccount1CompanyX.setCompany(companyZ);
 		bankAccount1CompanyX.setIsDeafultBankAccountInvoice(true);

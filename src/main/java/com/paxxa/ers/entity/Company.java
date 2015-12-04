@@ -3,14 +3,14 @@ package com.paxxa.ers.entity;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.validation.constraints.Size;
+
+import com.paxxa.ers.annotation.IsNIPCorrect;
 
 @Entity
 public class Company {
@@ -20,8 +20,10 @@ public class Company {
 	private Integer id;
 
 	@Column(name = "company_name")
+	@Size(min=3, max= 30, message="Name must be at least 3 characters and maximum 30 characters long")
 	private String companyName;
 
+	@IsNIPCorrect(message="incorrect NIP number")
 	private String nip;
 
 	private Long phone;

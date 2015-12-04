@@ -52,3 +52,5 @@
 	</div>
 
 </form:form>
+
+ <script src="<c:url value="/resources/js/validation.js" />"></script>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.validator.routines.checkdigit.IBANCheckDigit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,12 @@ public class BankAccountService {
 		return bankAccountRepository.findByIsDeafultBankAccountInvoiceIsTrue(company);
 	}
 
+	public Boolean isValidBankAccountNumber(String bankAccountNumber){
+		IBANCheckDigit bankAccountValidator = new IBANCheckDigit();
+		String ibanPrefix = "PL";
+		String bankAccount = ibanPrefix+bankAccountNumber.replaceAll("\\s+","");
+		Boolean isCorrect = bankAccountValidator.isValid(bankAccount);
+		return isCorrect;
+	}
 
 }

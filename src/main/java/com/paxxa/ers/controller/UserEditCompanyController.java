@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +68,18 @@ public class UserEditCompanyController {
 
 	@Transactional
 	@RequestMapping(value = "/user-settings/edit-company", method = RequestMethod.POST)
-	public String doEditCompany(@ModelAttribute("company") Company formCompany,
+	public String doEditCompany(@Valid @ModelAttribute("company") Company formCompany,
+			BindingResult results,
 			@RequestParam(value = "addressesToDelete[]", required = false) List<String> addressesToDeleteList,
 			@RequestParam(value = "defaultInvoiceAddress", required = false) String addressIdAsDefaultInvoice,
 			@RequestParam(value = "bankAccountToDelete[]", required = false) List<String> bankAccountToDeleteList,
 			@RequestParam(value = "defaultInvoiceBankAccount", required = false) String bankAccountIdAsDefaultInvoice,
 			Model model, Principal principal, BindingResult result, final RedirectAttributes redirectAttributes) {
+		if(result.hasErrors()){
+			return "edit-company";
+		}
+
+		
 		String name = principal.getName();
 		User currentUser = userService.findUser(name);
 		List<User> users = new ArrayList<User>();
@@ -259,7 +266,7 @@ public class UserEditCompanyController {
 					+ listOfBankAccountsFromForm.size());*/
 			for (BankAccount bankAccountFromForm : listOfBankAccountsFromForm) {
 				/*
-				 * block for saving dynamically added Bank Account (whoch do not
+				 * block for saving dynamically added Bank Account (which do not
 				 * contain ID) and prevention of saving into DB an empty
 				 * entities created after dynamically removing not-last object
 				 * form list (reason is not updated incrementation)
@@ -287,13 +294,14 @@ public class UserEditCompanyController {
 						if (!existingBankAccountDb.getAccountNumber().equals(bankAccountFromForm.getAccountNumber())
 								|| !existingBankAccountDb.getDescription()
 										.equals(bankAccountFromForm.getDescription())) {
+							logger.info("XXXXXXXXXXXXXXXXX");
 							existingBankAccountDb.setIsDeleted(true);
 							BankAccount bankAccountAfterRevision = new BankAccount();
 							bankAccountAfterRevision.setCompany(companyService.findCompanyByUser(users));
 							bankAccountAfterRevision.setAccountNumber(bankAccountFromForm.getAccountNumber());
 							bankAccountAfterRevision.setDescription(bankAccountFromForm.getDescription());
+							bankAccountService.saveOrUpdate(existingBankAccountDb);
 							bankAccountService.saveOrUpdate(bankAccountAfterRevision);
-
 						}
 					}
 				}

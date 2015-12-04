@@ -63,8 +63,6 @@
 		     return false;
 		 });
 		
-		
-		
 		// BANK ACCOUNT
 		var MaxInputsBank = 2; // counting starts from 0 including 0
 		var OutputcounterBank = countAccount; // (must start form -1) already displayed addresses from DB ->REQUIRE INTEGRATION   

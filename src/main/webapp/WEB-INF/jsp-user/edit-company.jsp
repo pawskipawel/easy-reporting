@@ -25,7 +25,8 @@
 </c:if>
 <div data-ng-app="myApp">
 	<div data-ng-controller="showData">
-		<form:form modelAttribute="company" method="post">
+		<form:form modelAttribute="company" method="post" cssClass="companyForm">
+		
 
 			<div class="row">
 				<div class="col-md-6">
@@ -54,6 +55,7 @@
 
 													<form:input path="companyName" value="${companyDB.companyName}"
 														cssClass="form-control" />
+														<form:errors path="companyName" />
 												</div>
 											</div></td>
 									</tr>
@@ -64,6 +66,8 @@
 
 													<form:input path="nip" value="${companyDB.nip}"
 														cssClass="form-control" />
+														<form:errors path="nip" />
+														
 												</div>
 											</div></td>
 									</tr>
@@ -199,6 +203,7 @@
 												<div class="col-sm-12">
 													<form:input path="bankAccount[0].accountNumber"
 														cssClass="form-control" disabled="true" />
+														
 												</div>
 											</div></td>
 									</tr>
@@ -529,6 +534,7 @@ var countAccount = "${countAccount}";
 </script>
 
  <script src="<c:url value="/resources/js/edit-company.js" />"></script>
+ <script src="<c:url value="/resources/js/validation.js" />"></script>
 
 
 

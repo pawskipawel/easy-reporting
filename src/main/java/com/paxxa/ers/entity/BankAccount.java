@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.paxxa.ers.annotation.IsValidIBAN;
+
 @Entity
 public class BankAccount {
 
@@ -16,6 +18,7 @@ public class BankAccount {
 	@GeneratedValue
 	private Integer id;
 
+	@IsValidIBAN(message="incorrect bank account number")
 	private String accountNumber;
 
 	private String description;
